@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { logout } from "../redux/userSlice"; // Make sure you have logout action in your slice
+import { IoIosArrowDown } from "react-icons/io";
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -87,22 +88,25 @@ const Header = () => {
 
   return (
     <AppBar sx={{ backgroundColor: "#0066FF", boxShadow: "none" }}>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h6" sx={{ fontFamily: "sans-serif" }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems:"center"}}>
+        <Typography variant="h6" sx={{ fontFamily: "Poppins",fontSize:"16px", paddingLeft:"10px" }}>
           Bridge Inspection Application
         </Typography>
         <Box display="flex" alignItems="center" gap={2}>
           <Avatar
-            sx={{ bgcolor: "#fff", color: "#1976d2", fontWeight: "bold" }}
+            sx={{ bgcolor: "#fff", color: "#1976d2", fontWeight: "600",fontFamily: "Poppins",fontSize:"16px",alignItems:"center" }}
           >
             {getInitials(name)}
           </Avatar>
-          <IconButton
+          <div style={{cursor: "pointer"}} onClick={handleMenuOpen}>
+            <IoIosArrowDown style={{color: "#fff"}}/>
+          </div>
+          {/* <IconButton
             onClick={handleMenuOpen}
             sx={{ cursor: "pointer", color: "#fff" }}
           >
             <span className="material-symbols-outlined">arrow_drop_down</span>
-          </IconButton>
+          </IconButton> */}
           <Menu
             anchorEl={anchorEl}
             open={open}
@@ -115,11 +119,12 @@ const Header = () => {
               vertical: "top",
               horizontal: "right",
             }}
+            sx={{marginTop: "15px"}}
           >
-            <MenuItem onClick={handleNotificationSettings}>
+            <MenuItem onClick={handleNotificationSettings} sx={{fontFamily: "Poppins",fontSize: "14px"}}>
               Notification Settings
             </MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout} sx={{fontFamily: "Poppins",fontSize: "14px"}}>Logout</MenuItem>
           </Menu>
         </Box>
       </Toolbar>

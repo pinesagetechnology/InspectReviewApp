@@ -8,20 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import "./InspectionTable.css";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-
 // import { TiArrowSortedDown } from "react-icons/ti";
 // import { TiArrowSortedUp } from "react-icons/ti";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { LuNotepadText } from "react-icons/lu";
 import { useState } from "react";
-import InspectionPopup from "../InspectionPopUp/InspectionPopUp";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import InspectionPopUp from "../InspectionPopUp/InspectionPopUp";
 
 const InspectionTable = () => {
-  // const [showPopup, setShowPopup] = useState(false);
-
   const data = [
     {
       bin: "1029",
@@ -198,37 +194,37 @@ const InspectionTable = () => {
                 <TableCell style={{ minWidth: 50 }}>
                   <div className="table-title">
                     <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">BiN</div>
+                    <div>BiN</div>
                   </div>
                 </TableCell>
-                <TableCell style={{ minWidth: 200 }}>
+                <TableCell style={{ minWidth: 180 }}>
                   <div className="table-title">
                     <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">Description</div>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: 150 }}>
-                  <div className="table-title">
-                    <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">Inspection type</div>
+                    <div>Description</div>
                   </div>
                 </TableCell>
                 <TableCell style={{ minWidth: 150 }}>
                   <div className="table-title">
                     <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">Inspected by</div>
+                    <div>Inspection type</div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: 150 }}>
+                  <div className="table-title">
+                    <TiArrowUnsorted className="icon" />
+                    <div>Inspected by</div>
                   </div>
                 </TableCell>
                 <TableCell style={{ minWidth: 200 }}>
                   <div className="table-title">
                     <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">Inspection date</div>
+                    <div>Inspection date</div>
                   </div>
                 </TableCell>
                 <TableCell style={{ minWidth: 50 }}>
                   <div className="table-title">
                     <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">BHI</div>
+                    <div>BHI</div>
                   </div>
                 </TableCell>
                 <TableCell style={{ minWidth: 30 }}>
@@ -242,7 +238,7 @@ const InspectionTable = () => {
                 <TableCell style={{ minWidth: 100 }}>
                   <div className="table-title">
                     <TiArrowUnsorted className="icon" />
-                    <div className="poppins-regular">
+                    <div>
                       Highest <br /> Risk rating
                     </div>
                   </div>
@@ -266,7 +262,6 @@ const InspectionTable = () => {
                       <TableCell align="center">{row.highestRisk}</TableCell>
                       <TableCell>
                         <div className="action-column">
-                          {/* <button onClick={() => setShowPopup(true)}> */}
                           <button onClick={handleOpen}>
                             Review inspection <LuNotepadText className="icon" />{" "}
                           </button>
@@ -279,6 +274,7 @@ const InspectionTable = () => {
           </Table>
         </TableContainer>
         <TablePagination
+          sx={{ fontFamily: "Poppins", fontSize: "14px" }}
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={data.length}
