@@ -35,40 +35,6 @@ const LoginPage = () => {
       Cookies.set("token", token);
       Cookies.set("refreshToken", refreshToken);
 
-      // try {
-      //   const userResponse = await axios.get("/api/user/api/User/list", {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //     withCredentials: true,
-      //   });
-
-      //   const user = userResponse.data.find((user) => {
-      //     if (user.email === email) {
-      //       setName(user.name);
-      //       return user.email === email;
-      //     }
-      //   });
-
-      //   console.log("User Data", user);
-
-      //   if (user.length === 0) {
-      //     Swal.fire({
-      //       icon: "error",
-      //       title: "Login Failed",
-      //       text: "User not found.",
-      //     });
-      //     return;
-      //   }
-      // } catch (error) {
-      //   Swal.fire({
-      //     icon: "error",
-      //     text: "Error Fetching data , Try again later!",
-      //   });
-      //   return;
-      //   // console.error("Error fetching user data:", error);
-      // }
-
       dispatch(loginSuccess({ token, refreshToken, email }));
       navigate("/home", { replace: true });
     } catch (error) {

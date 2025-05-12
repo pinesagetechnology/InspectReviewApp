@@ -117,12 +117,6 @@ const Header = () => {
           <div style={{ cursor: "pointer" }} onClick={handleMenuOpen}>
             <IoIosArrowDown style={{ color: "#fff" }} />
           </div>
-          {/* <IconButton
-            onClick={handleMenuOpen}
-            sx={{ cursor: "pointer", color: "#fff" }}
-          >
-            <span className="material-symbols-outlined">arrow_drop_down</span>
-          </IconButton> */}
           <Menu
             anchorEl={anchorEl}
             open={open}

@@ -23,34 +23,6 @@ const HomePage = () => {
       return;
     }
 
-    // const fetchUserData = async () => {
-    //   try {
-    //     const response = await axios.get("/api/user/api/User/list", {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //       withCredentials: true,
-    //     });
-
-    //     const user = response.data.find((user) => user.email === email);
-    //     console.log("User Data", user);
-    //     if (user) {
-    //       setUserName(user.name);
-    //     }
-
-    //     if (!user) {
-    //       navigate("/login");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching user data:", error);
-    //     // Optional: redirect if token is invalid
-    //     if (error.response?.status === 401) {
-    //       Cookies.remove("token");
-    //       navigate("/login");
-    //     }
-    //   }
-    // };
-
     const fetchData = async () => {
       try {
         const response = await axios.get("/api/inspect/api/Inspection/list", {
