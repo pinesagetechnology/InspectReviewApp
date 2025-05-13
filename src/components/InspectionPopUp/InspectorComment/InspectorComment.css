@@ -1,0 +1,19 @@
+.MuiTypography-root.inspector-comment-title{
+    font-family: 'poppins';
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.MuiTypography-root.inspector-comment{
+    font-family: 'poppins';
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 15px 15px 15px;
+}
+
+.space-box{
+    height: 20px;
+    width: 100%;
+    background: #f7f7f7;
+}

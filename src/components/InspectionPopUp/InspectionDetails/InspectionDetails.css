@@ -1,0 +1,39 @@
+.MuiTypography-root.inspection-detail-title{
+    font-family: 'poppins';
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.inspection-details-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2;
+}
+
+.inspection-details-container1{
+    width: 46%;
+    padding: 15px;
+}
+
+.inspection-details-container2{
+    width: 46%;
+    padding: 15px;
+}
+
+.inspection-container{
+    width: 50%;
+    align-items: start;
+}
+
+.inspection-details-container p{
+    font-family: 'poppins';
+    font-size: 14px;
+    height: 40px;
+}
+
+.inspection-detail{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 10px;
+}

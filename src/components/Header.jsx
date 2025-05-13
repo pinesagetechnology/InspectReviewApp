@@ -53,13 +53,13 @@ const Header = () => {
         if (user) {
           setUserName(user.name);
         } else {
-          navigate("/login");
+          navigate("/");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
         if (error.response?.status === 401) {
           Cookies.remove("token");
-          navigate("/login");
+          navigate("/");
         }
       }
     };
@@ -78,7 +78,7 @@ const Header = () => {
   const handleLogout = () => {
     Cookies.remove("token");
     dispatch(logout()); // Reset Redux store
-    navigate("/login");
+    navigate("/");
   };
 
   const handleNotificationSettings = () => {

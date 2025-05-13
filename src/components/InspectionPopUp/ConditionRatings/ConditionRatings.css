@@ -1,0 +1,40 @@
+.MuiTypography-root.condition-rating-title{
+    font-family: 'poppins';
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.MuiPaper-root.table-main-container{
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.table-head1 th{
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'poppins', sans-serif;
+    border-bottom: none;
+    padding-bottom: 0px;
+}
+
+.table-head1 .table-title{
+    display: flex;
+    align-items: center;
+}
+
+.table-head2 th{
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'poppins', sans-serif;
+    padding: 0 0 10px 0;
+}
+
+.table-head2 .table-title{
+    display: flex;
+    align-items: center;
+}

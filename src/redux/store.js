@@ -11,6 +11,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import inspectionReducer from "./inspectionSlice"; // <-- import your inspection reducer
 
 const persistConfig = {
   key: "root",
@@ -18,10 +19,12 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
+const persistedReducer2 = persistReducer(persistConfig, inspectionReducer); // <-- persist the inspection reducer
 
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
+    inspection: persistedReducer2, // <-- added here
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -157,44 +157,30 @@ const InspectionPopUp = ({ open, onClose }) => {
             boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <Box
-            sx={{
-              borderBottom:
-                activeFilter === "current" ? "4px solid #0066FF" : "none",
-              padding: "12px 20px",
-              cursor: "pointer",
-            }}
-            onClick={() => handleFilterClick("current")}
-          >
-            <Typography
+          {["current", "past"].map((filter) => (
+            <Box
+              key={filter}
               sx={{
-                fontFamily: "poppins",
-                fontSize: "14px",
-                fontWeight: "500",
+                borderBottom:
+                  activeFilter === filter ? "4px solid #0066FF" : "none",
+                padding: "12px 20px",
+                cursor: "pointer",
               }}
+              onClick={() => handleFilterClick(filter)}
             >
-              Current Inspection
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              borderBottom:
-                activeFilter === "past" ? "4px solid #0066FF" : "none",
-              padding: "12px 20px",
-              cursor: "pointer",
-            }}
-            onClick={() => handleFilterClick("past")}
-          >
-            <Typography
-              sx={{
-                fontFamily: "poppins",
-                fontSize: "14px",
-                fontWeight: "500",
-              }}
-            >
-              Past Inspection
-            </Typography>
-          </Box>
+              <Typography
+                sx={{
+                  fontFamily: "poppins",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                }}
+              >
+                {filter === "current"
+                  ? "Current Inspection"
+                  : "Past Inspection"}
+              </Typography>
+            </Box>
+          ))}
         </Box>
 
         {/* Content */}
@@ -222,7 +208,7 @@ const InspectionPopUp = ({ open, onClose }) => {
           )}
         </Box>
 
-        {/* Buttons */}
+        {/* Footer Buttons */}
         <Box
           sx={{
             p: 2,
