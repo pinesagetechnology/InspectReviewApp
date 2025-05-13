@@ -4,7 +4,7 @@ import { Typography, Container, Box } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import { useState } from "react";
 import InspectionTable from "../components/InspectionTable/InspectionTable";
 import Search from "../components/Search/Search";

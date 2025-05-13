@@ -13,8 +13,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { logout } from "../redux/userSlice"; // Make sure you have logout action in your slice
+import { logout } from "../../redux/userSlice"; // Make sure you have logout action in your slice
 import { IoIosArrowDown } from "react-icons/io";
+import './Header.css'
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -87,35 +88,17 @@ const Header = () => {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "#0066FF", boxShadow: "none" }}>
-      <Toolbar
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{ fontFamily: "Poppins", fontSize: "16px", paddingLeft: "10px" }}
-        >
+    <AppBar className="appbar">
+      <Toolbar className="tool-bar">
+        <Typography className="main-title" variant="h6">
           Bridge Inspection Application
         </Typography>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Avatar
-            sx={{
-              bgcolor: "#fff",
-              color: "#1976d2",
-              fontWeight: "600",
-              fontFamily: "Poppins",
-              fontSize: "16px",
-              alignItems: "center",
-            }}
-          >
+        <Box className="box-1">
+          <Avatar className="user-circle">
             {getInitials(name)}
           </Avatar>
-          <div style={{ cursor: "pointer" }} onClick={handleMenuOpen}>
-            <IoIosArrowDown style={{ color: "#fff" }} />
+          <div className="dropdown-btn" onClick={handleMenuOpen}>
+            <IoIosArrowDown className="icon"/>
           </div>
           <Menu
             anchorEl={anchorEl}
@@ -131,16 +114,10 @@ const Header = () => {
             }}
             sx={{ marginTop: "15px" }}
           >
-            <MenuItem
-              onClick={handleNotificationSettings}
-              sx={{ fontFamily: "Poppins", fontSize: "14px" }}
-            >
+            <MenuItem className="menu-item" onClick={handleNotificationSettings}>
               Notification Settings
             </MenuItem>
-            <MenuItem
-              onClick={handleLogout}
-              sx={{ fontFamily: "Poppins", fontSize: "14px" }}
-            >
+            <MenuItem className="menu-item" onClick={handleLogout}>
               Logout
             </MenuItem>
           </Menu>
