@@ -9,21 +9,39 @@ import {
   Box,
   Avatar,
   Modal,
+  IconButton,
+  Divider,
+  Paper,
+  TableContainer,
+  TablePagination,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import "./MaintenanceAction.css";
 
 const MaintenanceActions = ({ data }) => {
   const [openPhoto, setOpenPhoto] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [viewAllPhotos, setViewAllPhotos] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handlePhotoClick = (photoUrl) => {
-    setSelectedPhoto(photoUrl);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const handlePhotoClick = (index) => {
+    setSelectedIndex(index);
     setOpenPhoto(true);
   };
 
   const handleClosePhoto = () => {
     setOpenPhoto(false);
-    setSelectedPhoto(null);
+    setSelectedIndex(null);
   };
 
   const handleOpenAllPhotos = () => {
@@ -34,137 +52,186 @@ const MaintenanceActions = ({ data }) => {
     setViewAllPhotos(false);
   };
 
+  const selectedPhoto =
+    selectedIndex !== null ? data[selectedIndex]?.photo : null;
+
   return (
     <>
-      <Typography variant="subtitle1" gutterBottom sx={{ mt: 4 }}>
+      <Box className="space-box" />
+      <Divider />
+      <Typography className="maintenance-action-title" variant="subtitle1">
         3. Required maintenance activities and actions
       </Typography>
+      <Divider />
 
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <strong>Elem Code</strong>
-            </TableCell>
-            <TableCell>
-              <strong>MMS Act. No.</strong>
-            </TableCell>
-            <TableCell>
-              <strong>MMS Activity Description</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Inspector’s Comments</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Est qty</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Date</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Prob (a)</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Cons (b)</strong>
-            </TableCell>
-            <TableCell>
-              <strong>Inaction risk</strong>
-            </TableCell>
-            <TableCell
-              sx={{
-                cursor: "pointer",
-                color: "#1976d2",
-                textDecoration: "underline",
-              }}
-              onClick={handleOpenAllPhotos}
-            >
-              <strong>Photos</strong>
-            </TableCell>
-          </TableRow>
-        </TableHead>
+      <Paper className="table-main-container">
+        <TableContainer className="table-container">
+          <Table stickyHeader aria-label="maintenance table">
+            <TableHead>
+              <TableRow className="maintenance-action-table-head1">
+                <TableCell>Elem</TableCell>
+                <TableCell>MMS</TableCell>
+                <TableCell>MMS Activity</TableCell>
+                <TableCell>Inspector's Comments</TableCell>
+                <TableCell align="center">Est</TableCell>
+                <TableCell align="center">Date</TableCell>
+                <TableCell align="center">Prob</TableCell>
+                <TableCell align="center">Cons</TableCell>
+                <TableCell align="center">Inaction</TableCell>
+                <TableCell
+                  align="center"
+                  className="photos-btn"
+                  onClick={handleOpenAllPhotos}
+                  sx={{ cursor: "pointer", color: "#1976d2" }}
+                >
+                  Photos
+                </TableCell>
+              </TableRow>
+              <TableRow className="maintenance-action-table-head2">
+                <TableCell>Code</TableCell>
+                <TableCell width={50}>Act. No.</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell colSpan={1} />
+                <TableCell align="center">qty</TableCell>
+                <TableCell colSpan={1} />
+                <TableCell align="center">(a)</TableCell>
+                <TableCell align="center">(b)</TableCell>
+                <TableCell align="center">risk</TableCell>
+                <TableCell colSpan={1} />
+              </TableRow>
+            </TableHead>
+            <TableBody className="table-body">
+              {data
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.elemCode}</TableCell>
+                    <TableCell>{item.actNo}</TableCell>
+                    <TableCell>{item.description}</TableCell>
+                    <TableCell>{item.comments}</TableCell>
+                    <TableCell align="center">{item.qty}</TableCell>
+                    <TableCell align="center">{item.date}</TableCell>
+                    <TableCell align="center">
+                      <Box sx={{ borderRadius: 1, p: "2px 8px" }}>
+                        {item.prob}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box sx={{ borderRadius: 1, p: "2px 8px" }}>
+                        {item.cons}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box sx={{ borderRadius: 1, p: "2px 8px" }}>
+                        {item.inactionRisk}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Avatar
+                        variant="rounded"
+                        src={item.photo}
+                        alt="Photo"
+                        sx={{ width: 40, height: 40, cursor: "pointer" }}
+                        onClick={() =>
+                          handlePhotoClick(index + page * rowsPerPage)
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-        <TableBody>
-          {data.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell>{item.elemCode}</TableCell>
-              <TableCell>{item.actNo}</TableCell>
-              <TableCell>{item.description}</TableCell>
-              <TableCell>{item.comments}</TableCell>
-              <TableCell>{item.qty}</TableCell>
-              <TableCell>{item.date}</TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    // backgroundColor: "#D1FADF",
-                    borderRadius: 1,
-                    padding: "2px 8px",
-                    textAlign: "center",
-                  }}
-                >
-                  {item.prob}
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    // backgroundColor: "#D1FADF",
-                    borderRadius: 1,
-                    padding: "2px 8px",
-                    textAlign: "center",
-                  }}
-                >
-                  {item.cons}
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    // backgroundColor: "#D1FADF",
-                    borderRadius: 1,
-                    padding: "2px 8px",
-                    textAlign: "center",
-                  }}
-                >
-                  {item.inactionRisk}
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Avatar
-                  variant="rounded"
-                  src={item.photo}
-                  alt="Photo"
-                  sx={{ width: 40, height: 40, cursor: "pointer" }}
-                  onClick={() => handlePhotoClick(item.photo)}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 15]}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{ fontFamily: "Poppins", fontSize: "14px" }}
+        />
+      </Paper>
 
-      {/* Single Photo Modal */}
+      {/* Single Photo Modal with Thumbnails */}
       <Modal open={openPhoto} onClose={handleClosePhoto}>
         <Box
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "#fff",
-            boxShadow: 24,
-            p: 2,
-            borderRadius: 2,
-            outline: "none",
-            maxHeight: "90vh",
-            maxWidth: "90vw",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            bgcolor: "rgba(0, 0, 0, 0.85)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            zIndex: 1300,
           }}
         >
+          <IconButton
+            onClick={handleClosePhoto}
+            sx={{ position: "absolute", top: 20, right: 20, color: "#fff" }}
+          >
+            <CloseIcon fontSize="large" />
+          </IconButton>
+
           {selectedPhoto && (
-            <img
-              src={selectedPhoto}
-              alt="Full View"
-              style={{ maxWidth: "100%", maxHeight: "80vh", borderRadius: 4 }}
-            />
+            <>
+              <Typography variant="body1" sx={{ color: "#fff", mb: 2 }}>
+                {`${selectedIndex + 1} / ${data.length}`}
+              </Typography>
+              <Box
+                component="img"
+                src={selectedPhoto}
+                alt="Full View"
+                sx={{
+                  maxHeight: "60vh",
+                  maxWidth: "80vw",
+                  borderRadius: 1,
+                  mb: 2,
+                  border: "4px solid #fff",
+                  boxShadow: 4,
+                }}
+              />
+              <Typography variant="caption" sx={{ color: "#fff" }}>
+                {`2022 07 06 B1015 [RMA name].jpg`}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  mt: 3,
+                  overflowX: "auto",
+                  px: 3,
+                  pb: 2,
+                }}
+              >
+                {data.map((item, idx) => (
+                  <Box
+                    key={idx}
+                    component="img"
+                    src={item.photo}
+                    alt={`Thumbnail ${idx + 1}`}
+                    onClick={() => setSelectedIndex(idx)}
+                    sx={{
+                      width: 120,
+                      height: "auto",
+                      borderRadius: 1,
+                      border:
+                        selectedIndex === idx
+                          ? "3px solid #1976d2"
+                          : "2px solid #fff",
+                      cursor: "pointer",
+                      boxShadow: 2,
+                    }}
+                  />
+                ))}
+              </Box>
+            </>
           )}
         </Box>
       </Modal>

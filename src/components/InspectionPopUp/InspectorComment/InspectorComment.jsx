@@ -1,22 +1,27 @@
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Divider } from "@mui/material";
+import "./InspectorComment.css";
 
 const InspectorComment = ({ comment }) => {
   return (
     <>
-      <Typography variant="subtitle1" gutterBottom sx={{ mt: 4 }}>
+      <Box className="space-box" />
+      <Divider />
+      <Typography className="inspector-comment-title" variant="subtitle1">
         4. Inspector’s comments
       </Typography>
+      <Divider />
 
       <Box
         sx={{
-          backgroundColor: "#D1FADF",
+          backgroundColor: "aliceblue",
           p: 2,
           borderRadius: 2,
           whiteSpace: "pre-line",
+          mt: 2,
         }}
       >
-        <Typography>{comment}</Typography>
+        <Typography className="inspector-comment">{comment}</Typography>
       </Box>
     </>
   );

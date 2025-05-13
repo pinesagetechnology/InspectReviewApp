@@ -1,0 +1,39 @@
+.MuiTypography-root.maintenance-action-title{
+    font-family: 'poppins';
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.maintenance-action-table-head1 th{
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'poppins', sans-serif;
+    border-bottom: none;
+    padding-bottom: 0px;
+}
+
+.maintenance-action-table-head1 .table-title{
+    display: flex;
+    align-items: center;
+}
+
+.maintenance-action-table-head2 th{
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'poppins', sans-serif;
+    padding-top: 0;
+    padding-bottom: 10px;
+}
+
+.maintenance-action-table-head2 .table-title{
+    display: flex;
+    align-items: center;
+}
+
+.photos-btn{
+    cursor: pointer;
+}
+

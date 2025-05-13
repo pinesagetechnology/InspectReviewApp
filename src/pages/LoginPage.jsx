@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -12,13 +12,35 @@ import "./css/LoginPage.css";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [name, setName] = useState("");
   const [remoteIpAddress, setRemoteIpAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Fetch the user's public IP
+    const fetchIP = async () => {
+      try {
+        const res = await axios.get("https://api.ipify.org?format=json");
+        setRemoteIpAddress(res.data.ip);
+      } catch (err) {
+        console.error("Failed to fetch IP address", err);
+      }
+    };
+    fetchIP();
+  }, []);
+
   const handleLogin = async () => {
+    // Validation: Check if fields are empty
+    if (!email.trim() || !password.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "Enter all the valid fields",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await axios.post(
@@ -38,12 +60,13 @@ const LoginPage = () => {
       dispatch(loginSuccess({ token, refreshToken, email }));
       navigate("/home", { replace: true });
     } catch (error) {
+      // If login fails due to wrong credentials
       Swal.fire({
         icon: "error",
         title: "Login Failed",
-        text: "Invalid email, password, or remote IP address.",
+        text: "Enter valid credentials",
       });
-      console.error(error);
+      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -75,38 +98,9 @@ const LoginPage = () => {
               <FaLock className="icon" />
             </div>
 
-            <div className="input-box">
-              <input
-                placeholder="Remote IP"
-                type="text"
-                value={remoteIpAddress}
-                onChange={(e) => setRemoteIpAddress(e.target.value)}
-              />
-            </div>
-
-            <div className="remember-forgot">
-              <label>
-                <input type="checkbox" />
-                Remember me
-              </label>
-              <a href="#">Forgot password?</a>
-            </div>
-
             <button onClick={handleLogin} disabled={isLoading}>
               {isLoading ? "Loading..." : "Login"}
             </button>
-
-            <div className="divider">
-              <div className="line"></div>
-              <span>or</span>
-              <div className="line"></div>
-            </div>
-
-            <div className="register-link">
-              <Typography variant="p">
-                Don't have an account? <a href="#">Request access</a>
-              </Typography>
-            </div>
           </Box>
         </Container>
       </div>

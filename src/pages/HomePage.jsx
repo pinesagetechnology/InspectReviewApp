@@ -51,7 +51,6 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <Search />
       <InspectionTable />
     </>
   );
