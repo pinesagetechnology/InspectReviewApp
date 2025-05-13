@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import { FiX } from "react-icons/fi";
+
+import InspectionDetails from "./InspectionDetails/InspectionDetails";
+import ConditionRatings from "./ConditionRatings/ConditionRatings";
+import MaintenanceActions from "./MaintainenceAction/MaintainenceAction";
+import InspectorComment from "./InspectorComment/InspectorComment";
 
 const InspectionPopUp = ({ open, onClose }) => {
+  const [activeFilter, setActiveFilter] = useState("current");
+
+  const handleFilterClick = (filter) => {
+    setActiveFilter(filter);
+  };
+
   const inspectionDetails = {
     healthIndex: "Good",
     level: "Level 2",
@@ -53,139 +60,205 @@ const InspectionPopUp = ({ open, onClose }) => {
     },
   ];
 
+  const maintenanceData = [
+    {
+      elemCode: "MWWY",
+      actNo: "316.00",
+      description: "Remove Tree",
+      comments: "Remove tree from both U/S and D/S of the culvert",
+      qty: "5 ea",
+      date: "June 22",
+      prob: 1,
+      cons: 1,
+      inactionRisk: 1,
+      photo:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPjPTLtQ5UhpnqPtqMOrpcavRrpjcfuMWsCIMlcgFwygOcYgmA",
+    },
+    {
+      elemCode: "MWWY",
+      actNo: "316.00",
+      description: "Remove Tree",
+      comments: "Remove tree from both U/S and D/S of the culvert",
+      qty: "5 ea",
+      date: "June 22",
+      prob: 1,
+      cons: 1,
+      inactionRisk: 1,
+      photo:
+        "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTP56HI9MYMmNfnP1kG2TjXOoSsFFIdyFWPmXkMQRGuj4jKWeEZ",
+    },
+    {
+      elemCode: "MWWY",
+      actNo: "316.00",
+      description: "Remove Tree",
+      comments: "Remove tree from both U/S and D/S of the culvert",
+      qty: "5 ea",
+      date: "June 22",
+      prob: 1,
+      cons: 1,
+      inactionRisk: 1,
+      photo:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TGcA7wifBCRGm0FNRGV1vwS-wbI0s4Hzs2oJHcpP4RA3Ewjz",
+    },
+  ];
+
+  const inspectorComment = `Donec pulvinar ligula ut purus elementum lacinia. Suspendisse dignissim ut sem at laoreet. Vestibulum vehicula purus vitae pellentesque ultrices. Nulla ex lectus, sodales at pulvinar a, dapibus ut leo. Aliquam at aliquam diam. Donec sollicitudin rhoncus lectus at euismod.`;
+
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+      }}
+    >
       <Box
         sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 800,
-          maxHeight: "90vh",
-          overflowY: "auto",
-          bgcolor: "background.paper",
+          position: "relative",
+          width: 900,
+          bgcolor: "#fff",
           boxShadow: 24,
-          p: 4,
           borderRadius: 2,
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Typography variant="h6" gutterBottom>
-          Bridge 1015 Inspection Report
-        </Typography>
+        {/* Header */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            p: 2,
+            background: "#0066FF",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ color: "white", fontFamily: "poppins", fontSize: "18px" }}
+          >
+            Bridge 1015 Inspection Report
+          </Typography>
+          <FiX
+            style={{ color: "white", fontSize: "20px", cursor: "pointer" }}
+            onClick={onClose}
+          />
+        </Box>
 
-        <Divider sx={{ mb: 2 }} />
-
-        <Typography variant="subtitle1" gutterBottom>
-          1. Inspection Details
-        </Typography>
-
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-          <Box sx={{ width: "48%" }}>
-            <Typography>
-              <strong>Bridge Health Index:</strong>{" "}
-              {inspectionDetails.healthIndex}
-            </Typography>
-            <Typography>
-              <strong>Level of Inspection:</strong> {inspectionDetails.level}
-            </Typography>
-            <Typography>
-              <strong>Inspection Type:</strong>{" "}
-              {inspectionDetails.inspectionType}
-            </Typography>
-            <Typography>
-              <strong>Temperature:</strong> {inspectionDetails.temperature}
-            </Typography>
-            <Typography>
-              <strong>Inspector's Name:</strong> {inspectionDetails.inspector}
+        {/* Tabs */}
+        <Box
+          sx={{
+            display: "flex",
+            background: "#fff",
+            boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <Box
+            sx={{
+              borderBottom:
+                activeFilter === "current" ? "4px solid #0066FF" : "none",
+              padding: "12px 20px",
+              cursor: "pointer",
+            }}
+            onClick={() => handleFilterClick("current")}
+          >
+            <Typography
+              sx={{
+                fontFamily: "poppins",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
+            >
+              Current Inspection
             </Typography>
           </Box>
-
-          <Box sx={{ width: "48%" }}>
-            <Typography>
-              <strong>Inspection Date:</strong>{" "}
-              {inspectionDetails.inspectionDate}
-            </Typography>
-            <Typography>
-              <strong>Date of Next Inspection:</strong>{" "}
-              {inspectionDetails.nextInspection}
-            </Typography>
-            <Typography>
-              <strong>Weather:</strong> {inspectionDetails.weather}
-            </Typography>
-            <Typography>
-              <strong>Engineer's Name:</strong> {inspectionDetails.engineer}
+          <Box
+            sx={{
+              borderBottom:
+                activeFilter === "past" ? "4px solid #0066FF" : "none",
+              padding: "12px 20px",
+              cursor: "pointer",
+            }}
+            onClick={() => handleFilterClick("past")}
+          >
+            <Typography
+              sx={{
+                fontFamily: "poppins",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
+            >
+              Past Inspection
             </Typography>
           </Box>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
-
-        <Typography variant="subtitle1" gutterBottom>
-          2. Condition Ratings and Elements
-        </Typography>
-
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <strong>Code</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Description</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Total qty</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Unit</strong>
-              </TableCell>
-              <TableCell colSpan={4} align="center">
-                <strong>Condition Ratings (0-3)</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Element cond index</strong>
-              </TableCell>
-              <TableCell>
-                <strong>ECI change</strong>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={4} />
-              <TableCell align="center">0</TableCell>
-              <TableCell align="center">1</TableCell>
-              <TableCell align="center">2</TableCell>
-              <TableCell align="center">3</TableCell>
-              <TableCell colSpan={2} />
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {conditionData.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.code}</TableCell>
-                <TableCell>{item.desc}</TableCell>
-                <TableCell>{item.totalQty}</TableCell>
-                <TableCell>{item.unit}</TableCell>
-                {item.condition.map((val, i) => (
-                  <TableCell key={i} align="center">
-                    {val}
-                  </TableCell>
-                ))}
-                <TableCell>{item.element}</TableCell>
-                <TableCell>{item.eci}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-
+        {/* Content */}
         <Box
-          sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}
+          sx={{
+            p: 3,
+            overflowY: "auto",
+            flex: 1,
+          }}
         >
-          <Button variant="outlined" onClick={onClose}>
+          {activeFilter === "current" ? (
+            <>
+              <InspectionDetails details={inspectionDetails} />
+              <Divider sx={{ my: 3 }} />
+              <ConditionRatings data={conditionData} />
+              <Divider sx={{ my: 3 }} />
+              <MaintenanceActions data={maintenanceData} />
+              <Divider sx={{ my: 3 }} />
+              <InspectorComment comment={inspectorComment} />
+            </>
+          ) : (
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              Past inspection data will appear here.
+            </Typography>
+          )}
+        </Box>
+
+        {/* Buttons */}
+        <Box
+          sx={{
+            p: 2,
+            background: "#fff",
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 2,
+            boxShadow: "0px -1px 5px rgba(0,0,0,0.1)",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={onClose}
+            sx={{
+              fontFamily: "poppins",
+              fontSize: "12px",
+              textTransform: "none",
+              color: "#0066FF",
+              width: 170,
+              height: 45,
+            }}
+          >
             Approve and Close
           </Button>
-          <Button variant="contained" color="primary" onClick={onClose}>
+          <Button
+            variant="contained"
+            onClick={onClose}
+            sx={{
+              fontFamily: "poppins",
+              fontSize: "12px",
+              textTransform: "none",
+              backgroundColor: "#0066FF",
+              width: 170,
+              height: 45,
+            }}
+          >
             Approve and Continue
           </Button>
         </Box>

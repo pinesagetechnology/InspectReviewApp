@@ -36,7 +36,7 @@ const Header = () => {
     const token = Cookies.get("token");
 
     if (!token) {
-      navigate("/login");
+      navigate("/", { replace: true });
       return;
     }
 
@@ -88,25 +88,35 @@ const Header = () => {
 
   return (
     <AppBar sx={{ backgroundColor: "#0066FF", boxShadow: "none" }}>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems:"center"}}>
-        <Typography variant="h6" sx={{ fontFamily: "Poppins",fontSize:"16px", paddingLeft:"10px" }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{ fontFamily: "Poppins", fontSize: "16px", paddingLeft: "10px" }}
+        >
           Bridge Inspection Application
         </Typography>
         <Box display="flex" alignItems="center" gap={2}>
           <Avatar
-            sx={{ bgcolor: "#fff", color: "#1976d2", fontWeight: "600",fontFamily: "Poppins",fontSize:"16px",alignItems:"center" }}
+            sx={{
+              bgcolor: "#fff",
+              color: "#1976d2",
+              fontWeight: "600",
+              fontFamily: "Poppins",
+              fontSize: "16px",
+              alignItems: "center",
+            }}
           >
             {getInitials(name)}
           </Avatar>
-          <div style={{cursor: "pointer"}} onClick={handleMenuOpen}>
-            <IoIosArrowDown style={{color: "#fff"}}/>
+          <div style={{ cursor: "pointer" }} onClick={handleMenuOpen}>
+            <IoIosArrowDown style={{ color: "#fff" }} />
           </div>
-          {/* <IconButton
-            onClick={handleMenuOpen}
-            sx={{ cursor: "pointer", color: "#fff" }}
-          >
-            <span className="material-symbols-outlined">arrow_drop_down</span>
-          </IconButton> */}
           <Menu
             anchorEl={anchorEl}
             open={open}
@@ -119,12 +129,20 @@ const Header = () => {
               vertical: "top",
               horizontal: "right",
             }}
-            sx={{marginTop: "15px"}}
+            sx={{ marginTop: "15px" }}
           >
-            <MenuItem onClick={handleNotificationSettings} sx={{fontFamily: "Poppins",fontSize: "14px"}}>
+            <MenuItem
+              onClick={handleNotificationSettings}
+              sx={{ fontFamily: "Poppins", fontSize: "14px" }}
+            >
               Notification Settings
             </MenuItem>
-            <MenuItem onClick={handleLogout} sx={{fontFamily: "Poppins",fontSize: "14px"}}>Logout</MenuItem>
+            <MenuItem
+              onClick={handleLogout}
+              sx={{ fontFamily: "Poppins", fontSize: "14px" }}
+            >
+              Logout
+            </MenuItem>
           </Menu>
         </Box>
       </Toolbar>

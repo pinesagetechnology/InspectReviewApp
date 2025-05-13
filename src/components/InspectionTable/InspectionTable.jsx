@@ -15,6 +15,7 @@ import { LuNotepadText } from "react-icons/lu";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+
 import InspectionPopUp from "../InspectionPopUp/InspectionPopUp";
 
 const InspectionTable = () => {
@@ -272,6 +273,7 @@ const InspectionTable = () => {
                 })}
             </TableBody>
           </Table>
+          {/* {showPopup && <InspectionPopup onClose={() => setShowPopup(false)} />} */}
         </TableContainer>
         <TablePagination
           sx={{ fontFamily: "Poppins", fontSize: "14px" }}
@@ -284,6 +286,7 @@ const InspectionTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
       <InspectionPopUp open={open} onClose={handleClose}>
         <Box
           sx={{
