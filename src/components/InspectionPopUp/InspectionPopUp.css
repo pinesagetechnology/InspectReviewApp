@@ -12,4 +12,92 @@
   .animate-fadeIn {
     animation: fadeIn 0.3s ease-out forwards;
   }
-  
+
+.MuiModal-root.modal-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.MuiModal-root.modal-container .MuiBox-root.box-container{
+    position: relative;
+    width: 900px;
+    background-color: #fff;
+    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.MuiBox-root.header-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #0066FF;
+}
+
+.MuiBox-root.header-box .MuiTypography-root{
+    color: white;
+    font-size: 18px;
+    font-family: 'poppins';
+}
+
+.close-icon{
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.MuiBox-root.tabs-box{
+    display: flex;
+    background: #fff;
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+}
+
+.MuiBox-root.tabs-box .MuiBox-root.tabs-title-box{
+    padding: 12px 20px;
+    cursor: pointer;
+}
+
+.MuiBox-root.tabs-box .MuiTypography-root{
+    font-size: 14px;
+    font-family: 'poppins';
+    font-weight: 500;
+}
+
+.MuiBox-root.content-box{
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.MuiBox-root.footer-btn-box{
+    padding: 16px;
+    background: #fff;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.MuiBox-root.footer-btn-box .MuiButton-root.footer-btn{
+    font-family: 'poppins';
+    font-size: 12px;
+    text-transform: none;
+    color: #0066FF;
+    width: 170px;
+    height: 45px;
+}
+
+.MuiBox-root.footer-btn-box .MuiButton-root.footer-btn2{
+    font-family: 'poppins';
+    font-size: 12px;
+    text-transform: none;
+    background: #0066FF;
+    color: #fff;
+    width: 170px;
+    height: 45px;
+}

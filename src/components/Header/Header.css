@@ -1,0 +1,44 @@
+.MuiAppBar-root.appbar{
+    background: #0066FF;
+    box-shadow: none;
+}
+
+.MuiToolbar-root.tool-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MuiAppBar-root.appbar .main-title{
+    font-family: "Poppins";
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.MuiAppBar-root.appbar .MuiBox-root.box-1{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.MuiAppBar-root.appbar .user-circle{
+    background: #fff;
+    color: #1976d2;
+    font-family: "Poppins";
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+}
+
+.MuiAppBar-root.appbar .dropdown-btn{
+    cursor: pointer;
+}
+
+.MuiAppBar-root.appbar .dropdown-btn .icon{
+    color: #fff;
+}
+
+.MuiMenuItem-root.menu-item{
+    font-family: "Poppins";
+    font-size: 14px;
+}

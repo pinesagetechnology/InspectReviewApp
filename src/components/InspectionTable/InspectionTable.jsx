@@ -116,16 +116,14 @@ const InspectionTable = () => {
             <div className="completed-filter active">
               <p>
                 Completed{" "}
-                <span style={{ color: "#0066FF" }}>
+                <span>
                   ({sortedFilteredData().length})
                 </span>
               </p>
             </div>
           </div>
 
-          <Paper
-            sx={{ width: "100%", overflow: "hidden", borderRadius: "0px" }}
-          >
+          <Paper className="paper-container">
             <TableContainer className="table-container">
               <Table stickyHeader aria-label="inspection table">
                 <TableHead>
@@ -137,11 +135,7 @@ const InspectionTable = () => {
                       "inspectedBy",
                       "inspectionDate",
                     ].map((key) => (
-                      <TableCell
-                        key={key}
-                        onClick={() => requestSort(key)}
-                        style={{ cursor: "pointer" }}
-                      >
+                      <TableCell key={key} onClick={() => requestSort(key)}>
                         <div className="table-title">
                           <TiArrowUnsorted className="icon" />
                           <div>
@@ -175,8 +169,8 @@ const InspectionTable = () => {
             </TableContainer>
 
             <TablePagination
-              sx={{ fontFamily: "Poppins", fontSize: "14px" }}
-              rowsPerPageOptions={[1, 10, 25, 100]}
+              className="table-pagination"
+              rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={sortedFilteredData().length}
               rowsPerPage={rowsPerPage}
@@ -187,26 +181,6 @@ const InspectionTable = () => {
           </Paper>
 
           <InspectionPopUp open={open} onClose={handleClose}>
-            <Box
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 400,
-                bgcolor: "background.paper",
-                border: "2px solid #000",
-                boxShadow: 24,
-                p: 4,
-                borderRadius: 2,
-              }}
-            >
-              <h2>Inspection Details</h2>
-              <p>
-                This is where you can show detailed info about the inspection.
-              </p>
-              <button onClick={handleClose}>Close</button>
-            </Box>
           </InspectionPopUp>
         </>
       )}
