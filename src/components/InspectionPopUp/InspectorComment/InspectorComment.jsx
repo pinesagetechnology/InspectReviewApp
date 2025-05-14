@@ -14,7 +14,6 @@ const InspectorComment = ({ comment }) => {
 
       <Box
         sx={{
-          backgroundColor: "aliceblue",
           p: 2,
           borderRadius: 2,
           whiteSpace: "pre-line",

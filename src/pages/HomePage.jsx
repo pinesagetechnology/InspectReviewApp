@@ -8,22 +8,28 @@ import Header from "../components/Header/Header";
 import { useState } from "react";
 import InspectionTable from "../components/InspectionTable/InspectionTable";
 import Search from "../components/Search/Search";
+import {
+  fetchInspectionListStart,
+  fetchInspectionListSuccess,
+  fetchInspectionListFailure,
+} from "../redux/inspectionListSlice";
+import { useDispatch } from "react-redux";
 
 const HomePage = () => {
   const email = useSelector((state) => state.user.email);
-  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const token = Cookies.get("token");
 
-    // If no token, redirect to login
     if (!token) {
       navigate("/login");
       return;
     }
 
     const fetchData = async () => {
+      dispatch(fetchInspectionListStart());
+
       try {
         const response = await axios.get("/api/inspect/api/Inspection/list", {
           headers: {
@@ -33,20 +39,20 @@ const HomePage = () => {
         });
 
         const data = response.data;
+        dispatch(fetchInspectionListSuccess(data)); // Store in redux
         console.log("Particular Inspection", data);
       } catch (error) {
+        dispatch(fetchInspectionListFailure(error.message));
         console.error("Error fetching data:", error);
-        // Optional: redirect if token is invalid
         if (error.response?.status === 401) {
           Cookies.remove("token");
-          navigate("/login");
+          navigate("/");
         }
       }
     };
 
     fetchData();
-    // fetchUserData();
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return (
     <>

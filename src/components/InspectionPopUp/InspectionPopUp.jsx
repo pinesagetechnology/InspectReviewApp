@@ -10,123 +10,175 @@ import InspectionDetails from "./InspectionDetails/InspectionDetails";
 import ConditionRatings from "./ConditionRatings/ConditionRatings";
 import MaintenanceActions from "./MaintainenceAction/MaintainenceAction";
 import InspectorComment from "./InspectorComment/InspectorComment";
-import './InspectionPopUp.css'
+import { useSelector } from "react-redux";
 
-const InspectionPopUp = ({ open, onClose }) => {
+const InspectionPopUp = ({ open, onClose, id }) => {
   const [activeFilter, setActiveFilter] = useState("current");
 
   const handleFilterClick = (filter) => {
     setActiveFilter(filter);
   };
 
+  const { inspections: inspectionList } = useSelector(
+    (state) => state.inspectionList
+  );
+
+  const inspectionData = inspectionList.find((item) => item.structureId === id);
+
   const inspectionDetails = {
-    healthIndex: "Good",
-    level: "Level 2",
-    inspectionDate: "Friday 14 June 2024",
-    inspectionType: "Normal",
-    nextInspection: "December 2024",
-    temperature: "16 degrees",
-    weather: "Showers",
-    inspector: "John Smith",
-    engineer: "Jane Doe",
+    healthIndex: "Unknown",
+    level: inspectionData?.inspectionLevel,
+    inspectionDate: inspectionData?.inspectionDate,
+    inspectionType: inspectionData?.inspectionType,
+    nextInspection: inspectionData?.nextInspectionProposedDate,
+    temperature: inspectionData?.temperature,
+    weather: inspectionData?.weather,
+    inspector: inspectionData?.inspectorName,
+    engineer: inspectionData?.engineerName,
   };
 
-  const conditionData = [
-    {
-      code: "MAPP",
-      desc: "Approach Carriageway",
-      totalQty: 160,
-      unit: "ea",
-      condition: [0, 0, 2, 0],
-      element: "+67.0",
-      eci: "+0.0",
-    },
-    {
-      code: "MAPP",
-      desc: "Approach Carriageway",
-      totalQty: 160,
-      unit: "ea",
-      condition: [0, 1, 0, 0],
-      element: "+67.0",
-      eci: "+0.0",
-    },
-    {
-      code: "MAPP",
-      desc: "Approach Carriageway",
-      totalQty: 160,
-      unit: "ea",
-      condition: [0, 0, 0, 0],
-      element: "+67.0",
-      eci: "+0.0",
-    },
-  ];
+  const conditionData = inspectionData?.conditionRatings.map((rating) => ({
+    code: rating?.elementCode,
+    desc: rating?.elementDescription,
+    totalQty: 160,
+    unit: "ea",
+    condition: rating?.ratings,
+    element: "+67.0",
+    eci: "+0.0",
+  }));
 
-  const maintenanceData = [
-    {
-      elemCode: "MWWY",
-      actNo: "316.00",
-      description: "Remove Tree",
-      comments: "Remove tree from both U/S and D/S of the culvert",
-      qty: "5 ea",
-      date: "June 22",
-      prob: 1,
-      cons: 1,
-      inactionRisk: 1,
-      photo:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPjPTLtQ5UhpnqPtqMOrpcavRrpjcfuMWsCIMlcgFwygOcYgmA",
-    },
-    {
-      elemCode: "MWWY",
-      actNo: "316.00",
-      description: "Remove Tree",
-      comments: "Remove tree from both U/S and D/S of the culvert",
-      qty: "5 ea",
-      date: "June 22",
-      prob: 1,
-      cons: 1,
-      inactionRisk: 1,
-      photo:
-        "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTP56HI9MYMmNfnP1kG2TjXOoSsFFIdyFWPmXkMQRGuj4jKWeEZ",
-    },
-    {
-      elemCode: "MWWY",
-      actNo: "316.00",
-      description: "Remove Tree",
-      comments: "Remove tree from both U/S and D/S of the culvert",
-      qty: "5 ea",
-      date: "June 22",
-      prob: 1,
-      cons: 1,
-      inactionRisk: 1,
-      photo:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TGcA7wifBCRGm0FNRGV1vwS-wbI0s4Hzs2oJHcpP4RA3Ewjz",
-    },
-  ];
+  const maintenanceData = inspectionData?.maintenanceActions.map((action) => ({
+    elemCode: action?.elementCode,
+    actNo: action?.mmsActNo,
+    description: action?.elementDescription,
+    comments: action?.inspectionComment,
+    qty: action?.units,
+    date: action?.dateForCompletion,
+    prob: action?.probability,
+    cons: action?.consequenceOfInteraction,
+    inactionRisk: action?.activityInactionRisk,
+    photos:
+      action?.photos?.map((photo) => ({
+        url: photo?.url,
+        fileName: photo?.fileName,
+      })) || [],
+  }));
 
-  const inspectorComment = `Donec pulvinar ligula ut purus elementum lacinia. Suspendisse dignissim ut sem at laoreet. Vestibulum vehicula purus vitae pellentesque ultrices. Nulla ex lectus, sodales at pulvinar a, dapibus ut leo. Aliquam at aliquam diam. Donec sollicitudin rhoncus lectus at euismod.`;
+  // const maintenanceData = [
+  //   {
+  //     elemCode: "MWWY",
+  //     actNo: "316.00",
+  //     description: "Remove Tree",
+  //     comments: "Remove tree from both U/S and D/S of the culvert",
+  //     qty: "5 ea",
+  //     date: "June 22",
+  //     prob: 1,
+  //     cons: 1,
+  //     inactionRisk: 1,
+  //     photo:
+  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPjPTLtQ5UhpnqPtqMOrpcavRrpjcfuMWsCIMlcgFwygOcYgmA",
+  //   },
+  //   {
+  //     elemCode: "MWWY",
+  //     actNo: "316.00",
+  //     description: "Remove Tree",
+  //     comments: "Remove tree from both U/S and D/S of the culvert",
+  //     qty: "5 ea",
+  //     date: "June 22",
+  //     prob: 1,
+  //     cons: 1,
+  //     inactionRisk: 1,
+  //     photo:
+  //       "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTP56HI9MYMmNfnP1kG2TjXOoSsFFIdyFWPmXkMQRGuj4jKWeEZ",
+  //   },
+  //   {
+  //     elemCode: "MWWY",
+  //     actNo: "316.00",
+  //     description: "Remove Tree",
+  //     comments: "Remove tree from both U/S and D/S of the culvert",
+  //     qty: "5 ea",
+  //     date: "June 22",
+  //     prob: 1,
+  //     cons: 1,
+  //     inactionRisk: 1,
+  //     photo:
+  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TGcA7wifBCRGm0FNRGV1vwS-wbI0s4Hzs2oJHcpP4RA3Ewjz",
+  //   },
+  // ];
+
+  const inspectorComment = inspectionData?.comment || "No comments available";
 
   return (
-    <Modal className="modal-container" open={open} onClose={onClose}>
-      <Box className="box-container">
+    <Modal
+      open={open}
+      onClose={onClose}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Box
+        sx={{
+          position: "relative",
+          width: 900,
+          bgcolor: "#fff",
+          boxShadow: 24,
+          borderRadius: 2,
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {/* Header */}
-        <Box className="header-box">
-          <Typography variant="h6">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            p: 2,
+            background: "#0066FF",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ color: "white", fontFamily: "poppins", fontSize: "18px" }}
+          >
             Bridge 1015 Inspection Report
           </Typography>
-          <FiX className="close-icon" onClick={onClose}/>
+          <FiX
+            style={{ color: "white", fontSize: "20px", cursor: "pointer" }}
+            onClick={onClose}
+          />
         </Box>
 
         {/* Tabs */}
-        <Box className="tabs-box" >
+        <Box
+          sx={{
+            display: "flex",
+            background: "#fff",
+            boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.2)",
+          }}
+        >
           {["current", "past"].map((filter) => (
-            <Box className="tabs-title-box"
+            <Box
               key={filter}
               sx={{
-                borderBottom: activeFilter === filter ? "4px solid #0066FF" : "none",
+                borderBottom:
+                  activeFilter === filter ? "4px solid #0066FF" : "none",
+                padding: "12px 20px",
+                cursor: "pointer",
               }}
               onClick={() => handleFilterClick(filter)}
             >
-              <Typography>
+              <Typography
+                sx={{
+                  fontFamily: "poppins",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                }}
+              >
                 {filter === "current"
                   ? "Current Inspection"
                   : "Past Inspection"}
@@ -136,15 +188,21 @@ const InspectionPopUp = ({ open, onClose }) => {
         </Box>
 
         {/* Content */}
-        <Box className="content-box">
+        <Box
+          sx={{
+            p: 3,
+            overflowY: "auto",
+            flex: 1,
+          }}
+        >
           {activeFilter === "current" ? (
             <>
               <InspectionDetails details={inspectionDetails} />
-              <Divider />
+              <Divider sx={{ my: 3 }} />
               <ConditionRatings data={conditionData} />
-              <Divider />
+              <Divider sx={{ my: 3 }} />
               <MaintenanceActions data={maintenanceData} />
-              <Divider />
+              <Divider sx={{ my: 3 }} />
               <InspectorComment comment={inspectorComment} />
             </>
           ) : (
@@ -155,11 +213,42 @@ const InspectionPopUp = ({ open, onClose }) => {
         </Box>
 
         {/* Footer Buttons */}
-        <Box className="footer-btn-box">
-          <Button className="footer-btn" variant="outlined" onClick={onClose}>
+        <Box
+          sx={{
+            p: 2,
+            background: "#fff",
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 2,
+            boxShadow: "0px -1px 5px rgba(0,0,0,0.1)",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={onClose}
+            sx={{
+              fontFamily: "poppins",
+              fontSize: "12px",
+              textTransform: "none",
+              color: "#0066FF",
+              width: 170,
+              height: 45,
+            }}
+          >
             Approve and Close
           </Button>
-          <Button className="footer-btn2">
+          <Button
+            variant="contained"
+            onClick={onClose}
+            sx={{
+              fontFamily: "poppins",
+              fontSize: "12px",
+              textTransform: "none",
+              backgroundColor: "#0066FF",
+              width: 170,
+              height: 45,
+            }}
+          >
             Approve and Continue
           </Button>
         </Box>

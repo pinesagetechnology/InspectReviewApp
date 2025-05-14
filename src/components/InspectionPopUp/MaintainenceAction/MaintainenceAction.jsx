@@ -52,8 +52,8 @@ const MaintenanceActions = ({ data }) => {
     setViewAllPhotos(false);
   };
 
-  const selectedPhoto =
-    selectedIndex !== null ? data[selectedIndex]?.photo : null;
+  const selectedPhotos =
+    selectedIndex !== null ? data[selectedIndex]?.photos || [] : [];
 
   return (
     <>
@@ -81,8 +81,8 @@ const MaintenanceActions = ({ data }) => {
                 <TableCell
                   align="center"
                   className="photos-btn"
-                  onClick={handleOpenAllPhotos}
-                  sx={{ cursor: "pointer", color: "#1976d2" }}
+                  // onClick={handleOpenAllPhotos}
+                  // sx={{ cursor: "pointer" }}
                 >
                   Photos
                 </TableCell>
@@ -129,7 +129,7 @@ const MaintenanceActions = ({ data }) => {
                     <TableCell align="center">
                       <Avatar
                         variant="rounded"
-                        src={item.photo}
+                        src={item.photos?.[0]?.url}
                         alt="Photo"
                         sx={{ width: 40, height: 40, cursor: "pointer" }}
                         onClick={() =>
@@ -179,15 +179,15 @@ const MaintenanceActions = ({ data }) => {
             <CloseIcon fontSize="large" />
           </IconButton>
 
-          {selectedPhoto && (
+          {selectedPhotos.length > 0 && (
             <>
               <Typography variant="body1" sx={{ color: "#fff", mb: 2 }}>
-                {`${selectedIndex + 1} / ${data.length}`}
+                {`Photos for item ${selectedIndex + 1}`}
               </Typography>
               <Box
                 component="img"
-                src={selectedPhoto}
-                alt="Full View"
+                src={selectedPhotos[0].url}
+                alt={selectedPhotos[0].fileName}
                 sx={{
                   maxHeight: "60vh",
                   maxWidth: "80vw",
@@ -198,7 +198,7 @@ const MaintenanceActions = ({ data }) => {
                 }}
               />
               <Typography variant="caption" sx={{ color: "#fff" }}>
-                {`2022 07 06 B1015 [RMA name].jpg`}
+                {selectedPhotos[0].fileName}
               </Typography>
               <Box
                 sx={{
@@ -210,21 +210,24 @@ const MaintenanceActions = ({ data }) => {
                   pb: 2,
                 }}
               >
-                {data.map((item, idx) => (
+                {selectedPhotos.map((photo, idx) => (
                   <Box
                     key={idx}
                     component="img"
-                    src={item.photo}
+                    src={photo.url}
                     alt={`Thumbnail ${idx + 1}`}
-                    onClick={() => setSelectedIndex(idx)}
+                    onClick={() => {
+                      // Swap the main photo
+                      data[selectedIndex].photos.unshift(
+                        data[selectedIndex].photos.splice(idx, 1)[0]
+                      );
+                    }}
                     sx={{
                       width: 120,
                       height: "auto",
                       borderRadius: 1,
                       border:
-                        selectedIndex === idx
-                          ? "3px solid #1976d2"
-                          : "2px solid #fff",
+                        idx === 0 ? "3px solid #1976d2" : "2px solid #fff",
                       cursor: "pointer",
                       boxShadow: 2,
                     }}
