@@ -38,3 +38,10 @@
     display: flex;
     align-items: center;
 }
+
+.MuiTableBody-root.condition-rating-table-body .MuiTableCell-root{
+    color: gray;
+    font-size: 12px;
+    padding: 10px 16px;
+    font-family: 'poppins', sans-serif;
+}

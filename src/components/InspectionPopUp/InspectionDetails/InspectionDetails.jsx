@@ -5,11 +5,7 @@ import "./InspectionDetails.css";
 const InspectionDetails = ({ details }) => {
   return (
     <>
-      <Typography
-        className="inspection-detail-title"
-        variant="subtitle1"
-        gutterBottom
-      >
+      <Typography className="inspection-detail-title" variant="subtitle1" >
         1. Inspection Details
       </Typography>
 
