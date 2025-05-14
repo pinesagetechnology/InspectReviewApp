@@ -64,48 +64,6 @@ const InspectionPopUp = ({ open, onClose, id }) => {
       })) || [],
   }));
 
-  // const maintenanceData = [
-  //   {
-  //     elemCode: "MWWY",
-  //     actNo: "316.00",
-  //     description: "Remove Tree",
-  //     comments: "Remove tree from both U/S and D/S of the culvert",
-  //     qty: "5 ea",
-  //     date: "June 22",
-  //     prob: 1,
-  //     cons: 1,
-  //     inactionRisk: 1,
-  //     photo:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPjPTLtQ5UhpnqPtqMOrpcavRrpjcfuMWsCIMlcgFwygOcYgmA",
-  //   },
-  //   {
-  //     elemCode: "MWWY",
-  //     actNo: "316.00",
-  //     description: "Remove Tree",
-  //     comments: "Remove tree from both U/S and D/S of the culvert",
-  //     qty: "5 ea",
-  //     date: "June 22",
-  //     prob: 1,
-  //     cons: 1,
-  //     inactionRisk: 1,
-  //     photo:
-  //       "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTP56HI9MYMmNfnP1kG2TjXOoSsFFIdyFWPmXkMQRGuj4jKWeEZ",
-  //   },
-  //   {
-  //     elemCode: "MWWY",
-  //     actNo: "316.00",
-  //     description: "Remove Tree",
-  //     comments: "Remove tree from both U/S and D/S of the culvert",
-  //     qty: "5 ea",
-  //     date: "June 22",
-  //     prob: 1,
-  //     cons: 1,
-  //     inactionRisk: 1,
-  //     photo:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TGcA7wifBCRGm0FNRGV1vwS-wbI0s4Hzs2oJHcpP4RA3Ewjz",
-  //   },
-  // ];
-
   const inspectorComment = inspectionData?.comment || "No comments available";
 
   return (
