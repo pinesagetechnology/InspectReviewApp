@@ -12,6 +12,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import inspectionReducer from "./inspectionSlice"; // <-- import your inspection reducer
+import inspectionListReducer from "./inspectionListSlice"; // <-- import your inspection list reducer
 
 const persistConfig = {
   key: "root",
@@ -20,11 +21,13 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
 const persistedReducer2 = persistReducer(persistConfig, inspectionReducer); // <-- persist the inspection reducer
+const persistedReducer3 = persistReducer(persistConfig, inspectionListReducer); // <-- persist the inspection reducer
 
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
-    inspection: persistedReducer2, // <-- added here
+    structure: persistedReducer2, // <-- added here
+    inspectionList: persistedReducer3, // <-- added here
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

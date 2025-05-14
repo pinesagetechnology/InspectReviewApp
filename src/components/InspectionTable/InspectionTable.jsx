@@ -33,9 +33,15 @@ const InspectionTable = () => {
   const [open, setOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
+  const [id, setId] = useState(null);
 
   const dispatch = useDispatch();
-  const { inspections, loading } = useSelector((state) => state.inspection);
+  const { inspections, loading } = useSelector((state) => state.structure);
+  const { inspections: inspectionList } = useSelector(
+    (state) => state.inspectionList
+  );
+
+  console.log("Inspection List", inspectionList);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -45,6 +51,8 @@ const InspectionTable = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  console.log("Data", data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +64,7 @@ const InspectionTable = () => {
         });
 
         const transformedData = res.data.map((item) => ({
+          id: item.id,
           code: item.code,
           description: item.name,
           inspectionType: item.previousInspection?.inspectionType || "-",
@@ -116,14 +125,16 @@ const InspectionTable = () => {
             <div className="completed-filter active">
               <p>
                 Completed{" "}
-                <span>
+                <span style={{ color: "#0066FF" }}>
                   ({sortedFilteredData().length})
                 </span>
               </p>
             </div>
           </div>
 
-          <Paper className="paper-container">
+          <Paper
+            sx={{ width: "100%", overflow: "hidden", borderRadius: "0px" }}
+          >
             <TableContainer className="table-container">
               <Table stickyHeader aria-label="inspection table">
                 <TableHead>
@@ -135,7 +146,11 @@ const InspectionTable = () => {
                       "inspectedBy",
                       "inspectionDate",
                     ].map((key) => (
-                      <TableCell key={key} onClick={() => requestSort(key)}>
+                      <TableCell
+                        key={key}
+                        onClick={() => requestSort(key)}
+                        style={{ cursor: "pointer" }}
+                      >
                         <div className="table-title">
                           <TiArrowUnsorted className="icon" />
                           <div>
@@ -157,7 +172,14 @@ const InspectionTable = () => {
                       <TableCell>{row.inspectionDate}</TableCell>
                       <TableCell>
                         <div className="action-column">
-                          <button onClick={handleOpen}>
+                          {/* <button onClick={handleOpen}> */}
+                          <button
+                            onClick={() => {
+                              setOpen(true);
+                              console.log("Row ID", row.id);
+                              setId(row.id);
+                            }}
+                          >
                             Review inspection <LuNotepadText className="icon" />
                           </button>
                         </div>
@@ -169,8 +191,8 @@ const InspectionTable = () => {
             </TableContainer>
 
             <TablePagination
-              className="table-pagination"
-              rowsPerPageOptions={[10, 25, 100]}
+              sx={{ fontFamily: "Poppins", fontSize: "14px" }}
+              rowsPerPageOptions={[1, 10, 25, 100]}
               component="div"
               count={sortedFilteredData().length}
               rowsPerPage={rowsPerPage}
@@ -180,7 +202,27 @@ const InspectionTable = () => {
             />
           </Paper>
 
-          <InspectionPopUp open={open} onClose={handleClose}>
+          <InspectionPopUp open={open} onClose={handleClose} id={id}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                border: "2px solid #000",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+              }}
+            >
+              <h2>Inspection Details</h2>
+              <p>
+                This is where you can show detailed info about the inspection.
+              </p>
+              <button onClick={handleClose}>Close</button>
+            </Box>
           </InspectionPopUp>
         </>
       )}
