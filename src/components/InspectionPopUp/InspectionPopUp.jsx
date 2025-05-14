@@ -11,6 +11,7 @@ import ConditionRatings from "./ConditionRatings/ConditionRatings";
 import MaintenanceActions from "./MaintainenceAction/MaintainenceAction";
 import InspectorComment from "./InspectorComment/InspectorComment";
 import { useSelector } from "react-redux";
+import './InspectionPopUp.css'
 
 const InspectionPopUp = ({ open, onClose, id }) => {
   const [activeFilter, setActiveFilter] = useState("current");
@@ -67,76 +68,27 @@ const InspectionPopUp = ({ open, onClose, id }) => {
   const inspectorComment = inspectionData?.comment || "No comments available";
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <Box
-        sx={{
-          position: "relative",
-          width: 900,
-          bgcolor: "#fff",
-          boxShadow: 24,
-          borderRadius: 2,
-          maxHeight: "90vh",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+    <Modal className="modal-container" open={open} onClose={onClose}>
+      <Box className="box-container" >
         {/* Header */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            p: 2,
-            background: "#0066FF",
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ color: "white", fontFamily: "poppins", fontSize: "18px" }}
-          >
+        <Box className="header-box" >
+          <Typography variant="h6" >
             Bridge 1015 Inspection Report
           </Typography>
-          <FiX
-            style={{ color: "white", fontSize: "20px", cursor: "pointer" }}
-            onClick={onClose}
-          />
+          <FiX className="close-icon" onClick={onClose} />
         </Box>
 
         {/* Tabs */}
-        <Box
-          sx={{
-            display: "flex",
-            background: "#fff",
-            boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.2)",
-          }}
-        >
+        <Box className="tabs-box" >
           {["current", "past"].map((filter) => (
-            <Box
+            <Box className="tabs-title-box"
               key={filter}
               sx={{
-                borderBottom:
-                  activeFilter === filter ? "4px solid #0066FF" : "none",
-                padding: "12px 20px",
-                cursor: "pointer",
+                borderBottom: activeFilter === filter ? "4px solid #0066FF" : "none",
               }}
               onClick={() => handleFilterClick(filter)}
             >
-              <Typography
-                sx={{
-                  fontFamily: "poppins",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                }}
-              >
+              <Typography >
                 {filter === "current"
                   ? "Current Inspection"
                   : "Past Inspection"}
@@ -146,21 +98,15 @@ const InspectionPopUp = ({ open, onClose, id }) => {
         </Box>
 
         {/* Content */}
-        <Box
-          sx={{
-            p: 3,
-            overflowY: "auto",
-            flex: 1,
-          }}
-        >
+        <Box className="content-box">
           {activeFilter === "current" ? (
             <>
               <InspectionDetails details={inspectionDetails} />
-              <Divider sx={{ my: 3 }} />
+              <Divider />
               <ConditionRatings data={conditionData} />
-              <Divider sx={{ my: 3 }} />
+              <Divider/>
               <MaintenanceActions data={maintenanceData} />
-              <Divider sx={{ my: 3 }} />
+              <Divider/>
               <InspectorComment comment={inspectorComment} />
             </>
           ) : (
@@ -171,42 +117,11 @@ const InspectionPopUp = ({ open, onClose, id }) => {
         </Box>
 
         {/* Footer Buttons */}
-        <Box
-          sx={{
-            p: 2,
-            background: "#fff",
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: 2,
-            boxShadow: "0px -1px 5px rgba(0,0,0,0.1)",
-          }}
-        >
-          <Button
-            variant="outlined"
-            onClick={onClose}
-            sx={{
-              fontFamily: "poppins",
-              fontSize: "12px",
-              textTransform: "none",
-              color: "#0066FF",
-              width: 170,
-              height: 45,
-            }}
-          >
+        <Box className="footer-btn-box">
+          <Button className="footer-btn" variant="outlined" onClick={onClose}>
             Approve and Close
           </Button>
-          <Button
-            variant="contained"
-            onClick={onClose}
-            sx={{
-              fontFamily: "poppins",
-              fontSize: "12px",
-              textTransform: "none",
-              backgroundColor: "#0066FF",
-              width: 170,
-              height: 45,
-            }}
-          >
+          <Button className="footer-btn2" variant="contained" onClick={onClose}>
             Approve and Continue
           </Button>
         </Box>

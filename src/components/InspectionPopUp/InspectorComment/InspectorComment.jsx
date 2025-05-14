@@ -12,14 +12,7 @@ const InspectorComment = ({ comment }) => {
       </Typography>
       <Divider />
 
-      <Box
-        sx={{
-          p: 2,
-          borderRadius: 2,
-          whiteSpace: "pre-line",
-          mt: 2,
-        }}
-      >
+      <Box>
         <Typography className="inspector-comment">{comment}</Typography>
       </Box>
     </>
