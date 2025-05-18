@@ -89,7 +89,7 @@ const Header = () => {
       cancelButtonText: "Cancel",
       backdrop: true,
       reverseButtons: true,
-      width: "50%", // 👈 Smaller width
+      width: "300px", // 👈 Smaller width
     });
 
     if (result.isConfirmed) {
