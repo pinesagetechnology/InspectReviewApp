@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import theme from "./theme";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-import NotificationSettings from "./pages/NotoficationSettings";
 
 function App() {
   return (
@@ -13,10 +12,6 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route
-            path="/notification-settings"
-            element={<NotificationSettings />}
-          />
         </Routes>
       </Router>
     </ThemeProvider>
