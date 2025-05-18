@@ -54,8 +54,8 @@ const LoginPage = () => {
       );
 
       const { token, refreshToken } = response.data;
-      Cookies.set("token", token);
-      Cookies.set("refreshToken", refreshToken);
+      Cookies.set("token", token, { path: "/" });
+      Cookies.set("refreshToken", refreshToken, { path: "/" });
 
       dispatch(loginSuccess({ token, refreshToken, email }));
       navigate("/home", { replace: true });
