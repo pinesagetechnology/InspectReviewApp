@@ -23,7 +23,7 @@ const MaintenanceActions = ({ data }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [viewAllPhotos, setViewAllPhotos] = useState(false);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -71,25 +71,20 @@ const MaintenanceActions = ({ data }) => {
               <TableRow className="maintenance-action-table-head1">
                 <TableCell>Elem</TableCell>
                 <TableCell>MMS</TableCell>
-                <TableCell>MMS Activity</TableCell>
-                <TableCell>Inspector's Comments</TableCell>
+                <TableCell style={{ minWidth: 80 }}>MMS Activity</TableCell>
+                <TableCell style={{ minWidth: 140 }}>Inspector's Comments</TableCell>
                 <TableCell align="center">Est</TableCell>
                 <TableCell align="center">Date</TableCell>
                 <TableCell align="center">Prob</TableCell>
                 <TableCell align="center">Cons</TableCell>
                 <TableCell align="center">Inaction</TableCell>
-                <TableCell
-                  align="center"
-                  className="photos-btn"
-                  // onClick={handleOpenAllPhotos}
-                  // sx={{ cursor: "pointer" }}
-                >
+                <TableCell align="center" className="photos-btn">
                   Photos
                 </TableCell>
               </TableRow>
               <TableRow className="maintenance-action-table-head2">
                 <TableCell>Code</TableCell>
-                <TableCell width={50}>Act. No.</TableCell>
+                <TableCell style={{ minWidth: 50 }}>Act. No.</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell colSpan={1} />
                 <TableCell align="center">qty</TableCell>
@@ -100,7 +95,7 @@ const MaintenanceActions = ({ data }) => {
                 <TableCell colSpan={1} />
               </TableRow>
             </TableHead>
-            <TableBody className="table-body">
+            <TableBody className="maintenance-action-table-body">
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item, index) => (
@@ -109,23 +104,11 @@ const MaintenanceActions = ({ data }) => {
                     <TableCell>{item.actNo}</TableCell>
                     <TableCell>{item.description}</TableCell>
                     <TableCell>{item.comments}</TableCell>
-                    <TableCell align="center">{item.qty}</TableCell>
-                    <TableCell align="center">{item.date}</TableCell>
-                    <TableCell align="center">
-                      <Box sx={{ borderRadius: 1, p: "2px 8px" }}>
-                        {item.prob}
-                      </Box>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Box sx={{ borderRadius: 1, p: "2px 8px" }}>
-                        {item.cons}
-                      </Box>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Box sx={{ borderRadius: 1, p: "2px 8px" }}>
-                        {item.inactionRisk}
-                      </Box>
-                    </TableCell>
+                    <TableCell align="center" width={30}>{item.qty}</TableCell>
+                    <TableCell align="center" width={50}>{item.date}</TableCell>
+                    <TableCell align="center">{item.prob}</TableCell>
+                    <TableCell align="center">{item.cons}</TableCell>
+                    <TableCell align="center">{item.inactionRisk}</TableCell>
                     <TableCell align="center">
                       <Avatar
                         variant="rounded"
@@ -144,74 +127,40 @@ const MaintenanceActions = ({ data }) => {
         </TableContainer>
 
         <TablePagination
+          className="table-pagination"
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ fontFamily: "Poppins", fontSize: "14px" }}
-        />
+          onRowsPerPageChange={handleChangeRowsPerPage} />
       </Paper>
 
       {/* Single Photo Modal with Thumbnails */}
-      <Modal open={openPhoto} onClose={handleClosePhoto}>
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            bgcolor: "rgba(0, 0, 0, 0.85)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            zIndex: 1300,
-          }}
-        >
-          <IconButton
-            onClick={handleClosePhoto}
-            sx={{ position: "absolute", top: 20, right: 20, color: "#fff" }}
-          >
+      <Modal className="single-photo-modal" open={openPhoto} onClose={handleClosePhoto}>
+        <Box className="single-photo-modal-box">
+          <IconButton onClick={handleClosePhoto}>
             <CloseIcon fontSize="large" />
           </IconButton>
 
           {selectedPhotos.length > 0 && (
             <>
-              <Typography variant="body1" sx={{ color: "#fff", mb: 2 }}>
+              <Typography className="single-photo-title" variant="body1">
                 {`Photos for item ${selectedIndex + 1}`}
               </Typography>
-              <Box
+              <Box 
+                className="single-photo-imgbox1"
                 component="img"
                 src={selectedPhotos[0].url}
-                alt={selectedPhotos[0].fileName}
-                sx={{
-                  maxHeight: "60vh",
-                  maxWidth: "80vw",
-                  borderRadius: 1,
-                  mb: 2,
-                  border: "4px solid #fff",
-                  boxShadow: 4,
-                }}
+                alt={selectedPhotos[0].fileName} 
               />
-              <Typography variant="caption" sx={{ color: "#fff" }}>
+              <Typography className="single-photo-img-caption" variant="caption" >
                 {selectedPhotos[0].fileName}
               </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mt: 3,
-                  overflowX: "auto",
-                  px: 3,
-                  pb: 2,
-                }}
-              >
+              <Box className="single-photo-imgbox2" >
                 {selectedPhotos.map((photo, idx) => (
-                  <Box
+                  <Box className="single-photo-img"
                     key={idx}
                     component="img"
                     src={photo.url}
@@ -222,15 +171,7 @@ const MaintenanceActions = ({ data }) => {
                         data[selectedIndex].photos.splice(idx, 1)[0]
                       );
                     }}
-                    sx={{
-                      width: 120,
-                      height: "auto",
-                      borderRadius: 1,
-                      border:
-                        idx === 0 ? "3px solid #1976d2" : "2px solid #fff",
-                      cursor: "pointer",
-                      boxShadow: 2,
-                    }}
+                    sx={{ border: idx === 0 ? "3px solid #1976d2" : "2px solid #fff", }}
                   />
                 ))}
               </Box>
@@ -241,45 +182,17 @@ const MaintenanceActions = ({ data }) => {
 
       {/* All Photos Modal */}
       <Modal open={viewAllPhotos} onClose={handleCloseAllPhotos}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "#fff",
-            boxShadow: 24,
-            p: 3,
-            borderRadius: 2,
-            outline: "none",
-            maxHeight: "90vh",
-            maxWidth: "90vw",
-            overflowY: "auto",
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
+        <Box className="all-photos-box">
+          <Typography variant="h6">
             All Photos
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 2,
-              justifyContent: "center",
-            }}
-          >
+          <Box className="all-photos-imgbox">
             {data.map((item, index) => (
               <img
+                className="all-photos-img"
                 key={index}
                 src={item.photo}
-                alt={`Photo ${index + 1}`}
-                style={{
-                  width: "200px",
-                  height: "auto",
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                }}
-              />
+                alt={`Photo ${index + 1}`} />
             ))}
           </Box>
         </Box>

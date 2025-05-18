@@ -16,7 +16,7 @@ import "./ConditionRatings.css";
 
 const ConditionRatings = ({ data }) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -29,58 +29,41 @@ const ConditionRatings = ({ data }) => {
 
   return (
     <>
-      <Box className="space-box" sx={{ mt: 3 }} />
+      <Box className="space-box" />
+
       <Divider />
-      <Typography
-        className="condition-rating-title"
-        variant="subtitle1"
-        gutterBottom
-      >
+
+      <Typography className="condition-rating-title" variant="subtitle1" >
         2. Condition Ratings and Elements
       </Typography>
+
       <Divider />
 
       <Paper className="table-main-container">
         <TableContainer className="table-container">
-          <Table stickyHeader aria-label="condition ratings table" size="small">
-            <TableHead>
+          <Table stickyHeader aria-label="condition ratings table">
+          <TableHead>
               <TableRow className="table-head1">
-                <TableCell>
-                  <strong>Code</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Description</strong>
-                </TableCell>
-                <TableCell align="center">
-                  <strong>Total qty</strong>
-                </TableCell>
-                <TableCell align="center">
-                  <strong>Unit</strong>
-                </TableCell>
-                <TableCell colSpan={4} align="center">
-                  <strong>Condition Ratings (0-3)</strong>
-                </TableCell>
-                <TableCell align="center">
-                  <strong>Element cond index</strong>
-                </TableCell>
-                <TableCell align="center">
-                  <strong>ECI change</strong>
-                </TableCell>
+                <TableCell>Code</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell  align="center">Total</TableCell>
+                <TableCell  align="center">Units</TableCell>
+                <TableCell colSpan={4} align="center">Condition rating</TableCell>
+                <TableCell  align="center">Element</TableCell>
+                <TableCell  align="center">ECI</TableCell>
               </TableRow>
               <TableRow className="table-head2">
-                <TableCell colSpan={2} />
-                <TableCell align="center">qty</TableCell>
-                <TableCell />
-                {[0, 1, 2, 3].map((rating) => (
-                  <TableCell key={rating} align="center">
-                    {rating}
-                  </TableCell>
+                <TableCell colSpan={2}  align="center"/>
+                <TableCell  align="center">qty</TableCell>
+                <TableCell colSpan={1} />
+                {[1, 2, 3, 4].map((rating) => (
+                  <TableCell key={rating} align="center">{rating}</TableCell>
                 ))}
-                <TableCell align="center">cond index</TableCell>
-                <TableCell align="center">change</TableCell>
+                <TableCell  align="center">cond index</TableCell>
+                <TableCell  align="center">change</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody className="table-body">
+            <TableBody className="condition-rating-table-body">
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item, index) => (
@@ -102,7 +85,7 @@ const ConditionRatings = ({ data }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          sx={{ fontFamily: "Poppins", fontSize: "14px" }}
+          className="table-pagination"
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
           count={data.length}
