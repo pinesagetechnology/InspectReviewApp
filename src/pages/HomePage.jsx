@@ -23,7 +23,8 @@ const HomePage = () => {
     const token = Cookies.get("token");
 
     if (!token) {
-      navigate("/login");
+      navigate("/", { replace: true });
+      console.log("Tokens not found");
       return;
     }
 
@@ -46,7 +47,7 @@ const HomePage = () => {
         console.error("Error fetching data:", error);
         if (error.response?.status === 401) {
           Cookies.remove("token");
-          navigate("/");
+          navigate("/", { replace: true });
         }
       }
     };
