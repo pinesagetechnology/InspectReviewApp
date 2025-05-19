@@ -45,12 +45,12 @@ const ConditionRatings = ({ data }) => {
           <TableHead>
               <TableRow className="table-head1">
                 <TableCell>Code</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell  align="center">Total</TableCell>
-                <TableCell  align="center">Units</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Description</TableCell>
+                <TableCell style={{ minWidth: 50 }} align="center">Total</TableCell>
+                <TableCell style={{ minWidth: 50 }} align="center">Units</TableCell>
                 <TableCell colSpan={4} align="center">Condition rating</TableCell>
-                <TableCell  align="center">Element</TableCell>
-                <TableCell  align="center">ECI</TableCell>
+                <TableCell style={{ minWidth: 70 }} align="center">Element</TableCell>
+                <TableCell style={{ minWidth: 50 }} align="center">ECI</TableCell>
               </TableRow>
               <TableRow className="table-head2">
                 <TableCell colSpan={2}  align="center"/>

@@ -29,11 +29,35 @@
 .inspection-details-container p{
     font-family: 'poppins';
     font-size: 12px;
-    height: 35px;
+    padding-bottom: 15px;
 }
 
 .inspection-detail{
     display: flex;
     justify-content: space-between;
     padding-right: 10px;
+}
+
+@media only screen and (max-width: 992px) {
+    .inspection-details-container1{
+        width: 100%;
+        padding-bottom: 0;
+    }
+    
+    .inspection-details-container2{
+        width: 100%;
+        padding-top: 0;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .inspection-details-container1{
+        width: 100%;
+        padding-bottom: 0;
+    }
+    
+    .inspection-details-container2{
+        width: 100%;
+        padding-top: 0;
+    }
 }
