@@ -21,7 +21,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 30px;
+    /* padding-right: 30px; */
 }
 
 .search .search-filter .search-box{
@@ -63,7 +63,7 @@
 }
 
 .search-filter .filter-btn button{
-    display: flex;
+    display: none;
     justify-content: space-between;
     height: 40px;
     width: 80px;
@@ -85,3 +85,33 @@
     color: rgb(90, 89, 89);
     padding-right: 3px;
 }
+
+@media only screen and (max-width: 500px) {
+    .search{
+        flex-direction: column;
+        height: 100px;
+        padding-bottom: 20px;
+        align-items: start;
+    }
+
+    .search .search-filter{
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .search .search-filter .search-box{
+        margin: 0;
+        padding-left: 30px;
+        padding-right: 20px;
+    }
+
+    .search-filter .filter-btn{
+        padding-right: 20px;
+    }
+}
+
+/* @media only screen and (max-width: 450px) {
+    .search .search-filter .search-box{
+        width: 200px;
+    }
+} */

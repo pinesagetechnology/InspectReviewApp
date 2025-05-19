@@ -101,3 +101,21 @@
     width: 170px;
     height: 45px;
 }
+
+@media only screen and (max-width: 992px) {
+    .MuiModal-root.modal-container .MuiBox-root.box-container{
+        width: 600px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .MuiModal-root.modal-container .MuiBox-root.box-container{
+        width: 500px;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .MuiModal-root.modal-container .MuiBox-root.box-container{
+        width: 350px;
+    }
+}
