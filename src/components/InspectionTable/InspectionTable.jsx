@@ -113,6 +113,14 @@ const InspectionTable = () => {
     page * rowsPerPage + rowsPerPage
   );
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+  };
+
   return (
     <>
       <Search setSearchTerm={setSearchTerm} />
@@ -140,11 +148,12 @@ const InspectionTable = () => {
                     {[
                       "code",
                       "description",
-                      "inspectionType",
-                      "inspectedBy",
-                      "inspectionDate",
+                      "inspection Type",
+                      "inspected By",
+                      "inspection Date",
                     ].map((key) => (
-                      <TableCell key={key} onClick={() => requestSort(key)} >
+                      <TableCell key={key} onClick={() => requestSort(key)} 
+                      sx={{ minWidth: key === "code" ? "60px" : "150px"}}>
                         <div className="table-title">
                           <TiArrowUnsorted className="icon" />
                           <div>
@@ -157,29 +166,35 @@ const InspectionTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="table-body">
-                  {visibleRows.map((row, idx) => (
-                    <TableRow hover tabIndex={-1} key={idx}>
-                      <TableCell>{row.code}</TableCell>
-                      <TableCell>{row.description}</TableCell>
-                      <TableCell>{row.inspectionType}</TableCell>
-                      <TableCell>{row.inspectedBy}</TableCell>
-                      <TableCell>{row.inspectionDate}</TableCell>
-                      <TableCell>
-                        <div className="action-column">
-                          {/* <button onClick={handleOpen}> */}
-                          <button
-                            onClick={() => {
-                              setOpen(true);
-                              console.log("Row ID", row.id);
-                              setId(row.id);
-                            }}
-                          >
-                            Review inspection <LuNotepadText className="icon" />
-                          </button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {visibleRows.map((row, idx) => {
+                    const myDate = new Date(row.inspectionDate);
+                    const formattedDate = formatDate(myDate);
+
+                    return(
+                      <TableRow hover tabIndex={-1} key={idx}>
+                        <TableCell>{row.code}</TableCell>
+                        <TableCell>{row.description}</TableCell>
+                        <TableCell>{row.inspectionType}</TableCell>
+                        <TableCell>{row.inspectedBy}</TableCell>
+                        <TableCell>{formattedDate}</TableCell>
+                        <TableCell>
+                          <div className="action-column">
+                            {/* <button onClick={handleOpen}> */}
+                            <button
+                              onClick={() => {
+                                setOpen(true);
+                                console.log("Row ID", row.id);
+                                setId(row.id);
+                              }}
+                            >
+                              Review inspection <LuNotepadText className="icon" />
+                            </button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )
+                      
+                  } )}
                 </TableBody>
               </Table>
             </TableContainer>
