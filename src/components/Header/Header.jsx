@@ -17,6 +17,7 @@ import { logout } from "../../redux/userSlice"; // Make sure you have logout act
 import { IoIosArrowDown } from "react-icons/io";
 import './Header.css'
 import LogoutPopUp from "../LogoutPopUp/LogoutPopUp";
+import Swal from "sweetalert2";
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -80,14 +81,30 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    Cookies.remove("token");
-    dispatch(logout()); // Reset Redux store
-    navigate("/");
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, logout",
+      cancelButtonText: "Cancel",
+      backdrop: true,
+      reverseButtons: true,
+      width: "300px", // 👈 Smaller width
+    });
+
+    if (result.isConfirmed) {
+      Cookies.remove("token");
+      dispatch(logout());
+      navigate("/");
+    }
   };
 
   const handleNotificationSettings = () => {
-    alert("Notification settings clicked!");
+    navigate("/notification-settings");
     handleMenuClose();
   };
 
@@ -95,15 +112,17 @@ const Header = () => {
     <>
     <AppBar className="appbar">
       <Toolbar className="tool-bar">
-        <Typography className="main-title" variant="h6">
+        <Typography
+          className="main-title"
+          variant="h6"
+          onClick={() => navigate("/home", { replace: true })}
+        >
           Bridge Inspection Application
         </Typography>
         <Box className="box-1">
-          <Avatar className="user-circle">
-            {getInitials(name)}
-          </Avatar>
+          <Avatar className="user-circle">{getInitials(name)}</Avatar>
           <div className="dropdown-btn" onClick={handleMenuOpen}>
-            <IoIosArrowDown className="icon"/>
+            <IoIosArrowDown className="icon" />
           </div>
           <Menu
             anchorEl={anchorEl}
@@ -119,9 +138,14 @@ const Header = () => {
             }}
             sx={{ marginTop: "15px" }}
           >
-            <MenuItem className="menu-item" onClick={handleNotificationSettings}>
+            {/* <MenuItem
+              className="menu-item"
+              onClick={handleNotificationSettings}
+            >
               Notification Settings
             </MenuItem>
+            <MenuItem className="menu-item" onClick={() => setLogoutOpen(true)}>
+            </MenuItem> */}
             <MenuItem className="menu-item" onClick={() => setLogoutOpen(true)}>
               Logout
             </MenuItem>
