@@ -1,0 +1,45 @@
+.MuiModal-root.logoutpop-main-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.MuiBox-root.logoutpop-container{
+    height: 90px;
+    width: 250px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MuiBox-root.logoutpop-container .MuiTypography-root{
+    font-size: 16px;
+}
+
+.MuiBox-root.logoutpop-container .logoutpop-btns{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.MuiBox-root.logoutpop-container .logoutpop-btns .MuiButton-root{
+    height: 30px;
+    width: 80px;
+    background: #0066FF;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    color: white;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 12px;
+    font-family: 'poppins';
+    cursor: pointer;
+    text-transform: none;
+}

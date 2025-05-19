@@ -16,6 +16,7 @@ import Cookies from "js-cookie";
 import { logout } from "../../redux/userSlice"; // Make sure you have logout action in your slice
 import { IoIosArrowDown } from "react-icons/io";
 import './Header.css'
+import LogoutPopUp from "../LogoutPopUp/LogoutPopUp";
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -32,6 +33,9 @@ const Header = () => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [logoutOpen, setLogoutOpen] = useState(false);
+
+  const handleClose = () => setLogoutOpen(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -88,6 +92,7 @@ const Header = () => {
   };
 
   return (
+    <>
     <AppBar className="appbar">
       <Toolbar className="tool-bar">
         <Typography className="main-title" variant="h6">
@@ -117,13 +122,15 @@ const Header = () => {
             <MenuItem className="menu-item" onClick={handleNotificationSettings}>
               Notification Settings
             </MenuItem>
-            <MenuItem className="menu-item" onClick={handleLogout}>
+            <MenuItem className="menu-item" onClick={() => setLogoutOpen(true)}>
               Logout
             </MenuItem>
           </Menu>
         </Box>
       </Toolbar>
     </AppBar>
+      <LogoutPopUp open={logoutOpen} onClose={handleClose}></LogoutPopUp>
+      </>
   );
 };
 
