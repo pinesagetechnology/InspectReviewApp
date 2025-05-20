@@ -7,15 +7,14 @@ import {
   Box,
   Menu,
   MenuItem,
-  IconButton,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { logout } from "../../redux/userSlice"; // Make sure you have logout action in your slice
+import { logout } from "../../redux/userSlice";
 import { IoIosArrowDown } from "react-icons/io";
-import './Header.css'
+import "./Header.css";
 import LogoutPopUp from "../LogoutPopUp/LogoutPopUp";
 import Swal from "sweetalert2";
 
@@ -31,10 +30,13 @@ const Header = () => {
   const email = useSelector((state) => state.user.email);
   const [name, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
+
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [logoutOpen, setLogoutOpen] = useState(false);
 
   const handleClose = () => setLogoutOpen(false);
 
@@ -44,6 +46,8 @@ const Header = () => {
     if (!token) {
       navigate("/", { replace: true });
       return;
+    } else {
+      setToken(token);
     }
 
     const fetchUserData = async () => {
@@ -58,6 +62,7 @@ const Header = () => {
         const user = response.data.find((user) => user.email === email);
         if (user) {
           setUserName(user.name);
+          setUserId(user.userId);
         } else {
           navigate("/");
         }
@@ -81,80 +86,71 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to logout?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, logout",
-      cancelButtonText: "Cancel",
-      backdrop: true,
-      reverseButtons: true,
-      width: "300px", // 👈 Smaller width
-    });
+  const performLogout = async () => {
+    try {
+      const apiUrl = `https://ps-usermanagement-api-gufbchhve3gjawbe.centralus-01.azurewebsites.net/api/User/logout?userId=${userId}&accessToken=${token}`;
 
-    if (result.isConfirmed) {
+      await axios.post(apiUrl, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       Cookies.remove("token");
       dispatch(logout());
       navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      Swal.fire("Error", "Logout failed. Please try again.", "error");
     }
-  };
-
-  const handleNotificationSettings = () => {
-    navigate("/notification-settings");
-    handleMenuClose();
   };
 
   return (
     <>
-    <AppBar className="appbar">
-      <Toolbar className="tool-bar">
-        <Typography
-          className="main-title"
-          variant="h6"
-          onClick={() => navigate("/home", { replace: true })}
-        >
-          Bridge Inspection Application
-        </Typography>
-        <Box className="box-1">
-          <Avatar className="user-circle">{getInitials(name)}</Avatar>
-          <div className="dropdown-btn" onClick={handleMenuOpen}>
-            <IoIosArrowDown className="icon" />
-          </div>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleMenuClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            sx={{ marginTop: "15px" }}
+      <AppBar className="appbar">
+        <Toolbar className="tool-bar">
+          <Typography
+            className="main-title"
+            variant="h6"
+            onClick={() => navigate("/home", { replace: true })}
           >
-            {/* <MenuItem
-              className="menu-item"
-              onClick={handleNotificationSettings}
+            Bridge Inspection Application
+          </Typography>
+          <Box className="box-1">
+            <Avatar className="user-circle">{getInitials(name)}</Avatar>
+            <div className="dropdown-btn" onClick={handleMenuOpen}>
+              <IoIosArrowDown className="icon" />
+            </div>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              sx={{ marginTop: "15px" }}
             >
-              Notification Settings
-            </MenuItem>
-            <MenuItem className="menu-item" onClick={() => setLogoutOpen(true)}>
-            </MenuItem> */}
-            <MenuItem className="menu-item" onClick={() => setLogoutOpen(true)}>
-              Logout
-            </MenuItem>
-          </Menu>
-        </Box>
-      </Toolbar>
-    </AppBar>
-      <LogoutPopUp open={logoutOpen} onClose={handleClose}></LogoutPopUp>
-      </>
+              <MenuItem
+                className="menu-item"
+                onClick={() => setLogoutOpen(true)}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <LogoutPopUp
+        open={logoutOpen}
+        onClose={handleClose}
+        onConfirm={performLogout}
+      />
+    </>
   );
 };
 
