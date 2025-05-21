@@ -55,6 +55,14 @@ const MaintenanceActions = ({ data }) => {
   const selectedPhotos =
     selectedIndex !== null ? data[selectedIndex]?.photos || [] : [];
 
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const year = d.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
   return (
     <>
       <Box className="space-box" />
@@ -74,7 +82,7 @@ const MaintenanceActions = ({ data }) => {
                 <TableCell style={{ minWidth: 80 }}>MMS Activity</TableCell>
                 <TableCell style={{ minWidth: 140 }}>Inspector's Comments</TableCell>
                 <TableCell align="center">Est</TableCell>
-                <TableCell align="center">Date</TableCell>
+                <TableCell style={{ minWidth: 80 }} align="center">Date</TableCell>
                 <TableCell align="center">Prob</TableCell>
                 <TableCell align="center">Cons</TableCell>
                 <TableCell align="center">Inaction</TableCell>
@@ -98,14 +106,18 @@ const MaintenanceActions = ({ data }) => {
             <TableBody className="maintenance-action-table-body">
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((item, index) => (
+                .map((item, index) => {
+                    const myDate = new Date(item.date);
+                    const formattedDate = formatDate(myDate);
+
+                  return (
                   <TableRow key={index}>
                     <TableCell>{item.elemCode}</TableCell>
                     <TableCell>{item.actNo}</TableCell>
                     <TableCell>{item.description}</TableCell>
                     <TableCell>{item.comments}</TableCell>
                     <TableCell align="center" width={30}>{item.qty}</TableCell>
-                    <TableCell align="center" width={50}>{item.date}</TableCell>
+                    <TableCell align="center" >{formattedDate}</TableCell>
                     <TableCell align="center">{item.prob}</TableCell>
                     <TableCell align="center">{item.cons}</TableCell>
                     <TableCell align="center">{item.inactionRisk}</TableCell>
@@ -121,7 +133,7 @@ const MaintenanceActions = ({ data }) => {
                       />
                     </TableCell>
                   </TableRow>
-                ))}
+                )})}
             </TableBody>
           </Table>
         </TableContainer>
