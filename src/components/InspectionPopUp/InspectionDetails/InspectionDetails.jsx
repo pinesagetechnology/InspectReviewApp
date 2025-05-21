@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import "./InspectionDetails.css";
 
 const InspectionDetails = ({ details }) => {
+
+  const [inspectionDate, setInspectionDate] = useState();
+  const [nextInspectionDate, setNextInspectionDate] = useState();
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  useEffect(() => {
+    const date1 = new Date(details.inspectionDate);
+    const date2 = new Date(details.nextInspection);
+    setInspectionDate(formatDate(date1));
+    setNextInspectionDate(formatDate(date2));
+  });
+  
   return (
     <>
       <Typography className="inspection-detail-title" variant="subtitle1" >
@@ -59,7 +78,7 @@ const InspectionDetails = ({ details }) => {
               <strong>Inspection Date</strong>
             </span>
             <span className="inspection-container">
-              {details.inspectionDate}
+              {inspectionDate}
             </span>
           </Typography>
 
@@ -68,7 +87,7 @@ const InspectionDetails = ({ details }) => {
               <strong>Date of Next Inspection</strong>
             </span>
             <span className="inspection-container">
-              {details.nextInspection}
+              {nextInspectionDate}
             </span>
           </Typography>
 

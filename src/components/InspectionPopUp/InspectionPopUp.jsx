@@ -110,9 +110,15 @@ const InspectionPopUp = ({ open, onClose, id }) => {
               <InspectorComment comment={inspectorComment} />
             </>
           ) : (
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              Past inspection data will appear here.
-            </Typography>
+            <>
+              <InspectionDetails details={inspectionDetails} />
+              <Divider />
+              <ConditionRatings data={conditionData} />
+              <Divider/>
+              <MaintenanceActions data={maintenanceData} />
+              <Divider/>
+              <InspectorComment comment={inspectorComment} />
+            </>
           )}
         </Box>
 
