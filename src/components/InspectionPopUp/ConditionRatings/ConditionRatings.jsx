@@ -33,7 +33,7 @@ const ConditionRatings = ({ data }) => {
 
       <Divider />
 
-      <Typography className="condition-rating-title" variant="subtitle1" >
+      <Typography className="condition-rating-title" variant="subtitle1">
         2. Condition Ratings and Elements
       </Typography>
 
@@ -42,25 +42,33 @@ const ConditionRatings = ({ data }) => {
       <Paper className="table-main-container">
         <TableContainer className="table-container">
           <Table stickyHeader aria-label="condition ratings table">
-          <TableHead>
+            <TableHead>
               <TableRow className="table-head1">
                 <TableCell>Code</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Description</TableCell>
-                <TableCell style={{ minWidth: 50 }} align="center">Total</TableCell>
-                <TableCell style={{ minWidth: 50 }} align="center">Units</TableCell>
-                <TableCell colSpan={4} align="center">Condition rating</TableCell>
-                <TableCell style={{ minWidth: 70 }} align="center">Element</TableCell>
-                <TableCell style={{ minWidth: 50 }} align="center">ECI</TableCell>
+                <TableCell style={{ minWidth: 50 }} align="center">
+                  Total
+                </TableCell>
+                <TableCell style={{ minWidth: 50 }} align="center">
+                  Units
+                </TableCell>
+                <TableCell colSpan={4} align="center">
+                  Condition rating
+                </TableCell>
+                {/* <TableCell style={{ minWidth: 70 }} align="center">Element</TableCell>
+                <TableCell style={{ minWidth: 50 }} align="center">ECI</TableCell> */}
               </TableRow>
               <TableRow className="table-head2">
-                <TableCell colSpan={2}  align="center"/>
-                <TableCell  align="center">qty</TableCell>
+                <TableCell colSpan={2} align="center" />
+                <TableCell align="center">qty</TableCell>
                 <TableCell colSpan={1} />
                 {[1, 2, 3, 4].map((rating) => (
-                  <TableCell key={rating} align="center">{rating}</TableCell>
+                  <TableCell key={rating} align="center">
+                    {rating}
+                  </TableCell>
                 ))}
-                <TableCell  align="center">cond index</TableCell>
-                <TableCell  align="center">change</TableCell>
+                {/* <TableCell  align="center">cond index</TableCell>
+                <TableCell  align="center">change</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody className="condition-rating-table-body">
@@ -77,8 +85,8 @@ const ConditionRatings = ({ data }) => {
                         {val}
                       </TableCell>
                     ))}
-                    <TableCell align="center">{item.element}</TableCell>
-                    <TableCell align="center">{item.eci}</TableCell>
+                    {/* <TableCell align="center">{item.element}</TableCell>
+                    <TableCell align="center">{item.eci}</TableCell> */}
                   </TableRow>
                 ))}
             </TableBody>
