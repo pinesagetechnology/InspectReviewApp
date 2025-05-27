@@ -91,8 +91,10 @@ const InspectionTable = () => {
   };
 
   const sortedFilteredData = () => {
-    let filteredData = data.filter((item) =>
-      item.code.toLowerCase().includes(searchTerm.toLowerCase())
+    let filteredData = data.filter(
+      (item) =>
+        item.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (sortConfig.key) {
@@ -115,10 +117,10 @@ const InspectionTable = () => {
 
   const formatDate = (date) => {
     const d = new Date(date);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-  const year = d.getFullYear();
-  return `${day}-${month}-${year}`;
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
   return (
@@ -132,15 +134,12 @@ const InspectionTable = () => {
           <div className="filter_container">
             <div className="completed-filter active">
               <p>
-                Completed{" "}
-                <span>
-                  ({sortedFilteredData().length})
-                </span>
+                Completed <span>({sortedFilteredData().length})</span>
               </p>
             </div>
           </div>
 
-          <Paper className="paper-container" >
+          <Paper className="paper-container">
             <TableContainer className="table-container">
               <Table stickyHeader aria-label="inspection table">
                 <TableHead>
@@ -152,8 +151,11 @@ const InspectionTable = () => {
                       "inspected By",
                       "inspection Date",
                     ].map((key) => (
-                      <TableCell key={key} onClick={() => requestSort(key)} 
-                      sx={{ minWidth: key === "code" ? "60px" : "150px"}}>
+                      <TableCell
+                        key={key}
+                        onClick={() => requestSort(key)}
+                        sx={{ minWidth: key === "code" ? "60px" : "150px" }}
+                      >
                         <div className="table-title">
                           <TiArrowUnsorted className="icon" />
                           <div>
@@ -170,7 +172,7 @@ const InspectionTable = () => {
                     const myDate = new Date(row.inspectionDate);
                     const formattedDate = formatDate(myDate);
 
-                    return(
+                    return (
                       <TableRow hover tabIndex={-1} key={idx}>
                         <TableCell>{row.code}</TableCell>
                         <TableCell>{row.description}</TableCell>
@@ -187,19 +189,19 @@ const InspectionTable = () => {
                                 setId(row.id);
                               }}
                             >
-                              Review inspection <LuNotepadText className="icon" />
+                              Review inspection{" "}
+                              <LuNotepadText className="icon" />
                             </button>
                           </div>
                         </TableCell>
                       </TableRow>
-                    )
-                      
-                  } )}
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
 
-            <TablePagination 
+            <TablePagination
               className="table-pagination"
               rowsPerPageOptions={[1, 10, 25, 100]}
               component="div"
@@ -211,7 +213,9 @@ const InspectionTable = () => {
             />
           </Paper>
 
-          <InspectionPopUp open={open} onClose={handleClose} id={id}> </InspectionPopUp>
+          <InspectionPopUp open={open} onClose={handleClose} id={id}>
+            {" "}
+          </InspectionPopUp>
         </>
       )}
     </>

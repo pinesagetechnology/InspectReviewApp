@@ -10,7 +10,7 @@ export default function Search({ setSearchTerm }) {
       <div className="search-filter">
         <div className="search-box">
           <input
-            placeholder="Search by Code"
+            placeholder="Search by Code / Description"
             type="text"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
