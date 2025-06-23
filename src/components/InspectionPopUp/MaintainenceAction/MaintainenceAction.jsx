@@ -38,7 +38,12 @@ const MaintenanceActions = ({ data }) => {
     }
   }, [selectedIndex]);
 
-
+  useEffect(() => {
+    if (images.length > 0) {
+      setImageUrl(images[0].url);
+      setImageName(images[0].fileName);
+    }
+  }, [images]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -57,6 +62,9 @@ const MaintenanceActions = ({ data }) => {
   const handleClosePhoto = () => {
     setOpenPhoto(false);
     setSelectedIndex(null);
+    setImages([]);
+    setImageUrl('');
+    setImageName('');
   };
 
   const formatDate = (date) => {

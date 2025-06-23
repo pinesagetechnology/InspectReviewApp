@@ -10,8 +10,10 @@ import TableRow from "@mui/material/TableRow";
 import "./InspectionTable.css";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { LuNotepadText } from "react-icons/lu";
+import { HiDocumentReport } from "react-icons/hi";
 import InspectionPopUp from "../InspectionPopUp/InspectionPopUp";
-import Search from "../Search/Search"; // Make sure Search accepts a prop for setting searchTerm
+import Search from "../Search/Search";
+import InspectionReport from "../InspectionReport/InspectionReport";
 
 const InspectionTable = ({
   structureList,
@@ -21,11 +23,11 @@ const InspectionTable = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
   const [structureId, setStructureId] = useState(null);
   const [inspectionId, setInspectionId] = useState(null);
-
 
   useEffect(() => {
     if (inspections.length === 0 || structureList.length === 0) return;
@@ -47,6 +49,7 @@ const InspectionTable = ({
   }, [inspections, structureList]);
 
   const handleClose = () => setOpen(false);
+  const handleReportClose = () => setReportOpen(false);
 
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
@@ -90,7 +93,7 @@ const InspectionTable = ({
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(d.getMonth() + 1).padStart(2, "0");
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -133,7 +136,7 @@ const InspectionTable = ({
                       </div>
                     </TableCell>
                   ))}
-                  <TableCell></TableCell>
+                  <TableCell sx={{ minWidth: "200px" }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody className="table-body">
@@ -151,6 +154,7 @@ const InspectionTable = ({
                       <TableCell>
                         <div className="action-column">
                           <button
+                            className="review-button"
                             onClick={() => {
                               setOpen(true);
                               setStructureId(row.structureId);
@@ -159,6 +163,17 @@ const InspectionTable = ({
                           >
                             Review inspection{" "}
                             <LuNotepadText className="icon" />
+                          </button>
+                          <button
+                            className="report-button"
+                            onClick={() => {
+                              setReportOpen(true);
+                              setStructureId(row.structureId);
+                              setInspectionId(row.id);
+                            }}
+                          >
+                            Generate Report{" "}
+                            <HiDocumentReport className="icon" />
                           </button>
                         </div>
                       </TableCell>
@@ -181,9 +196,16 @@ const InspectionTable = ({
           />
         </Paper>
 
-        <InspectionPopUp open={open} onClose={handleClose} inspectionId={inspectionId} structureId={structureId}>
-          {" "}
-        </InspectionPopUp>
+        <InspectionPopUp open={open} onClose={handleClose} inspectionId={inspectionId} structureId={structureId} />
+
+        <InspectionReport
+          open={reportOpen}
+          onClose={handleReportClose}
+          inspectionId={inspectionId}
+          structureId={structureId}
+          inspections={inspections}
+          structureList={structureList}
+        />
       </>
     </>
   );
