@@ -1,8 +1,5 @@
 import React from "react";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import { Box, Typography, Modal, Button } from "@mui/material";
 import "./LogoutPopUp.css";
 
 const LogoutPopUp = ({ open, onClose, onConfirm }) => {

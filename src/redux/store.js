@@ -11,23 +11,23 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import inspectionReducer from "./inspectionSlice"; // <-- import your inspection reducer
 import inspectionListReducer from "./inspectionListSlice"; // <-- import your inspection list reducer
+import structureReducer from "./dataStructureSlice"; // <-- import your structure reducer
 
 const persistConfig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
-const persistedReducer2 = persistReducer(persistConfig, inspectionReducer); // <-- persist the inspection reducer
-const persistedReducer3 = persistReducer(persistConfig, inspectionListReducer); // <-- persist the inspection reducer
+const user = persistReducer(persistConfig, userReducer);
+const structure = persistReducer(persistConfig, structureReducer); // <-- persist the inspection reducer
+const inspections = persistReducer(persistConfig, inspectionListReducer); // <-- persist the inspection reducer
 
 export const store = configureStore({
   reducer: {
-    user: persistedReducer,
-    structure: persistedReducer2, // <-- added here
-    inspectionList: persistedReducer3, // <-- added here
+    user: user,
+    structure: structure, // <-- added here
+    inspectionList: inspections, // <-- added here
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

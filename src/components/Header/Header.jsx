@@ -10,13 +10,12 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { logout } from "../../redux/userSlice";
 import { IoIosArrowDown } from "react-icons/io";
 import "./Header.css";
 import LogoutPopUp from "../LogoutPopUp/LogoutPopUp";
 import Swal from "sweetalert2";
+import userApiService from "../../services/userApiService";
 
 const getInitials = (name) => {
   if (!name) return "";
@@ -41,7 +40,7 @@ const Header = () => {
   const handleClose = () => setLogoutOpen(false);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = userApiService.getToken();
 
     if (!token) {
       navigate("/", { replace: true });
@@ -52,14 +51,9 @@ const Header = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("/api/user/api/User/list", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        });
-
-        const user = response.data.find((user) => user.email === email);
+        const userList = await userApiService.getUserList();
+        const user = userApiService.findUserByEmail(userList, email);
+        
         if (user) {
           setUserName(user.name);
           setUserId(user.userId);
@@ -69,7 +63,7 @@ const Header = () => {
       } catch (error) {
         console.error("Error fetching user data:", error);
         if (error.response?.status === 401) {
-          Cookies.remove("token");
+          userApiService.removeTokens();
           navigate("/");
         }
       }
@@ -88,15 +82,8 @@ const Header = () => {
 
   const performLogout = async () => {
     try {
-      const apiUrl = `https://ps-usermanagement-api-gufbchhve3gjawbe.centralus-01.azurewebsites.net/api/User/logout?userId=${userId}&accessToken=${token}`;
-
-      await axios.post(apiUrl, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      Cookies.remove("token");
+      await userApiService.logout(userId, token);
+      userApiService.removeTokens();
       dispatch(logout());
       navigate("/");
     } catch (error) {
