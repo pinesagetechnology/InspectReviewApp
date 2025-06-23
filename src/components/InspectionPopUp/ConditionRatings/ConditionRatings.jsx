@@ -72,8 +72,7 @@ const ConditionRatings = ({ data }) => {
               </TableRow>
             </TableHead>
             <TableBody className="condition-rating-table-body">
-              {data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>{item.code}</TableCell>
@@ -96,7 +95,7 @@ const ConditionRatings = ({ data }) => {
           className="table-pagination"
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={data.length}
+          count={data?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

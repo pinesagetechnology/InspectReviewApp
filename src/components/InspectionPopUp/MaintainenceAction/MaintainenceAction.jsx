@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Table,
@@ -17,13 +17,28 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import "./MaintenanceAction.css";
+import assetApiService from "../../../services/assetApiService";
 
 const MaintenanceActions = ({ data }) => {
   const [openPhoto, setOpenPhoto] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [viewAllPhotos, setViewAllPhotos] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [images, setImages] = useState([]);
+  const [imageUrl, setImageUrl] = useState('');
+  const [imageName, setImageName] = useState('');
+
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      console.log("Data", data[selectedIndex].photos);
+      (data[selectedIndex]?.photos || []).map(async (photo) => {
+        const photos = await assetApiService.getPhotos(photo.apiResponse.id);
+        setImages(prevImages => [...prevImages, photos]);
+      })
+    }
+  }, [selectedIndex]);
+
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -44,24 +59,18 @@ const MaintenanceActions = ({ data }) => {
     setSelectedIndex(null);
   };
 
-  const handleOpenAllPhotos = () => {
-    setViewAllPhotos(true);
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
-  const handleCloseAllPhotos = () => {
-    setViewAllPhotos(false);
+  const handleClickonImageBox = (index) => {
+    setImageUrl(images[index].url);
+    setImageName(images[index].fileName);
   };
-
-  const selectedPhotos =
-    selectedIndex !== null ? data[selectedIndex]?.photos || [] : [];
-
-    const formatDate = (date) => {
-      const d = new Date(date);
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-      const year = d.getFullYear();
-      return `${day}-${month}-${year}`;
-    };
 
   return (
     <>
@@ -104,36 +113,36 @@ const MaintenanceActions = ({ data }) => {
               </TableRow>
             </TableHead>
             <TableBody className="maintenance-action-table-body">
-              {data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item, index) => {
-                    const myDate = new Date(item.date);
-                    const formattedDate = formatDate(myDate);
+                  const myDate = new Date(item.date);
+                  const formattedDate = formatDate(myDate);
 
                   return (
-                  <TableRow key={index}>
-                    <TableCell>{item.elemCode}</TableCell>
-                    <TableCell>{item.actNo}</TableCell>
-                    <TableCell>{item.description}</TableCell>
-                    <TableCell>{item.comments}</TableCell>
-                    <TableCell align="center" width={30}>{item.qty}</TableCell>
-                    <TableCell align="center" >{formattedDate}</TableCell>
-                    <TableCell align="center">{item.prob}</TableCell>
-                    <TableCell align="center">{item.cons}</TableCell>
-                    <TableCell align="center">{item.inactionRisk}</TableCell>
-                    <TableCell align="center">
-                      <Avatar
-                        variant="rounded"
-                        src={item.photos?.[0]?.url}
-                        alt="Photo"
-                        sx={{ width: 40, height: 40, cursor: "pointer" }}
-                        onClick={() =>
-                          handlePhotoClick(index + page * rowsPerPage)
-                        }
-                      />
-                    </TableCell>
-                  </TableRow>
-                )})}
+                    <TableRow key={index}>
+                      <TableCell>{item.elemCode}</TableCell>
+                      <TableCell>{item.actNo}</TableCell>
+                      <TableCell>{item.description}</TableCell>
+                      <TableCell>{item.comments}</TableCell>
+                      <TableCell align="center" width={30}>{item.qty}</TableCell>
+                      <TableCell align="center" >{formattedDate}</TableCell>
+                      <TableCell align="center">{item.prob}</TableCell>
+                      <TableCell align="center">{item.cons}</TableCell>
+                      <TableCell align="center">{item.inactionRisk}</TableCell>
+                      <TableCell align="center">
+                        <Avatar
+                          variant="rounded"
+                          src={item.photos?.[0]?.url}
+                          alt="Photo"
+                          sx={{ width: 40, height: 40, cursor: "pointer" }}
+                          onClick={() =>
+                            handlePhotoClick(index + page * rowsPerPage)
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -142,7 +151,7 @@ const MaintenanceActions = ({ data }) => {
           className="table-pagination"
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={data.length}
+          count={data?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -156,57 +165,34 @@ const MaintenanceActions = ({ data }) => {
             <CloseIcon fontSize="large" />
           </IconButton>
 
-          {selectedPhotos.length > 0 && (
+          {images.length > 0 && (
             <>
               <Typography className="single-photo-title" variant="body1">
                 {`Photos for item ${selectedIndex + 1}`}
               </Typography>
-              <Box 
+              <Box
                 className="single-photo-imgbox1"
                 component="img"
-                src={selectedPhotos[0].url}
-                alt={selectedPhotos[0].fileName} 
+                src={imageUrl}
+                alt={imageName}
               />
               <Typography className="single-photo-img-caption" variant="caption" >
-                {selectedPhotos[0].fileName}
+                {imageName}
               </Typography>
               <Box className="single-photo-imgbox2" >
-                {selectedPhotos.map((photo, idx) => (
+                {images.map((photo, idx) => (
                   <Box className="single-photo-img"
                     key={idx}
                     component="img"
                     src={photo.url}
                     alt={`Thumbnail ${idx + 1}`}
-                    onClick={() => {
-                      // Swap the main photo
-                      data[selectedIndex].photos.unshift(
-                        data[selectedIndex].photos.splice(idx, 1)[0]
-                      );
-                    }}
+                    onClick={() => handleClickonImageBox(idx)}
                     sx={{ border: idx === 0 ? "3px solid #1976d2" : "2px solid #fff", }}
                   />
                 ))}
               </Box>
             </>
           )}
-        </Box>
-      </Modal>
-
-      {/* All Photos Modal */}
-      <Modal open={viewAllPhotos} onClose={handleCloseAllPhotos}>
-        <Box className="all-photos-box">
-          <Typography variant="h6">
-            All Photos
-          </Typography>
-          <Box className="all-photos-imgbox">
-            {data.map((item, index) => (
-              <img
-                className="all-photos-img"
-                key={index}
-                src={item.photo}
-                alt={`Photo ${index + 1}`} />
-            ))}
-          </Box>
         </Box>
       </Modal>
     </>

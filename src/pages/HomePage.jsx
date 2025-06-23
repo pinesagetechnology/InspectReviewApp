@@ -1,26 +1,31 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Typography, Container, Box } from "@mui/material";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header";
-import { useState } from "react";
 import InspectionTable from "../components/InspectionTable/InspectionTable";
-import Search from "../components/Search/Search";
 import {
   fetchInspectionListStart,
   fetchInspectionListSuccess,
   fetchInspectionListFailure,
 } from "../redux/inspectionListSlice";
+import {
+  fetchStructuresStart,
+  fetchStructuresSuccess,
+  fetchStructuresFailure,
+} from "../redux/dataStructureSlice";
 import { useDispatch } from "react-redux";
+import inspectionApiService from "../services/inspectionApiService";
+import Loader from "../components/Loader/Loader";
 
 const HomePage = () => {
   const email = useSelector((state) => state.user.email);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const structureList = useSelector((state) => state.structure.structureList);
+  const inspections = useSelector((state) => state.inspectionList.inspections);
+
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = inspectionApiService.getToken();
 
     if (!token) {
       navigate("/", { replace: true });
@@ -28,37 +33,46 @@ const HomePage = () => {
       return;
     }
 
-    const fetchData = async () => {
+    const fetchInspectionData = async () => {
       dispatch(fetchInspectionListStart());
 
       try {
-        const response = await axios.get("/api/inspect/api/Inspection/list", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        });
-
-        const data = response.data;
+        const data = await inspectionApiService.getInspectionList();
         dispatch(fetchInspectionListSuccess(data)); // Store in redux
-        console.log("Particular Inspection", data);
       } catch (error) {
         dispatch(fetchInspectionListFailure(error.message));
-        console.error("Error fetching data:", error);
         if (error.response?.status === 401) {
-          Cookies.remove("token");
+          inspectionApiService.removeTokens();
           navigate("/", { replace: true });
         }
       }
     };
 
-    fetchData();
-  }, [navigate, dispatch]);
+    const fetchStructureData = async () => {
+      dispatch(fetchStructuresStart());
+      try {
+        const structureData = await inspectionApiService.getStructureList();
+        dispatch(fetchStructuresSuccess(structureData));
+      } catch (error) {
+        dispatch(fetchStructuresFailure(error.message));
+      }
+    };
+
+    fetchInspectionData();
+    fetchStructureData();
+  }, []);
 
   return (
     <>
       <Header />
-      <InspectionTable />
+      {
+        (structureList.length === 0 && inspections.length === 0) ?
+          <Loader /> :
+          <InspectionTable 
+            structureList={structureList}
+            inspections={inspections}
+          />
+      }
     </>
   );
 };

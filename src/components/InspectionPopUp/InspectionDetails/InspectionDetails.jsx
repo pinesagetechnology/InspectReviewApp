@@ -16,8 +16,8 @@ const InspectionDetails = ({ details }) => {
   };
 
   useEffect(() => {
-    const date1 = new Date(details.inspectionDate);
-    const date2 = new Date(details.nextInspection);
+    const date1 = new Date(details?.inspectionDate);
+    const date2 = new Date(details?.nextInspection);
     setInspectionDate(formatDate(date1));
     setNextInspectionDate(formatDate(date2));
   });
@@ -33,18 +33,12 @@ const InspectionDetails = ({ details }) => {
       <Box className="inspection-details-container">
         {/* Left Column */}
         <Box className="inspection-details-container1">
-          <Typography className="inspection-detail">
-            <span className="inspection-container">
-              <strong>Bridge Health Index</strong>
-            </span>
-            <span className="inspection-container">{details.healthIndex}</span>
-          </Typography>
 
           <Typography className="inspection-detail">
             <span className="inspection-container">
               <strong>Level of Inspection</strong>
             </span>
-            <span className="inspection-container">{details.level}</span>
+            <span className="inspection-container">{details?.level}</span>
           </Typography>
 
           <Typography className="inspection-detail">
@@ -52,7 +46,7 @@ const InspectionDetails = ({ details }) => {
               <strong>Inspection Type</strong>
             </span>
             <span className="inspection-container">
-              {details.inspectionType}
+              {details?.inspectionType}
             </span>
           </Typography>
 
@@ -60,14 +54,14 @@ const InspectionDetails = ({ details }) => {
             <span className="inspection-container">
               <strong>Temperature</strong>
             </span>
-            <span className="inspection-container">{details.temperature}</span>
+            <span className="inspection-container">{details?.temperature}</span>
           </Typography>
 
           <Typography className="inspection-detail">
             <span className="inspection-container">
               <strong>Inspector's Name</strong>
             </span>
-            <span className="inspection-container">{details.inspector}</span>
+            <span className="inspection-container">{details?.inspector}</span>
           </Typography>
         </Box>
 
@@ -95,14 +89,14 @@ const InspectionDetails = ({ details }) => {
             <span className="inspection-container">
               <strong>Weather</strong>
             </span>
-            <span className="inspection-container">{details.weather}</span>
+            <span className="inspection-container">{details?.weather}</span>
           </Typography>
 
           <Typography className="inspection-detail">
             <span className="inspection-container">
               <strong>Engineer's Name</strong>
             </span>
-            <span className="inspection-container">{details.engineer}</span>
+            <span className="inspection-container">{details?.engineer}</span>
           </Typography>
         </Box>
       </Box>

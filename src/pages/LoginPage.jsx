@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "./css/LoginPage.css";
+import userApiService from "../services/userApiService";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -21,8 +20,8 @@ const LoginPage = () => {
     // Fetch the user's public IP
     const fetchIP = async () => {
       try {
-        const res = await axios.get("https://api.ipify.org?format=json");
-        setRemoteIpAddress(res.data.ip);
+        const data = await userApiService.getPublicIP();
+        setRemoteIpAddress(data.ip);
       } catch (err) {
         console.error("Failed to fetch IP address", err);
       }
@@ -43,19 +42,10 @@ const LoginPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "/api/user/api/User/login",
-        {
-          email,
-          password,
-          remoteIpAddress,
-        },
-        { withCredentials: true }
-      );
+      const response = await userApiService.login(email, password, remoteIpAddress);
 
-      const { token, refreshToken } = response.data;
-      Cookies.set("token", token);
-      Cookies.set("refreshToken", refreshToken);
+      const { token, refreshToken } = response;
+      userApiService.setTokens(token, refreshToken);
 
       dispatch(loginSuccess({ token, refreshToken, email }));
       navigate("/home", { replace: true });

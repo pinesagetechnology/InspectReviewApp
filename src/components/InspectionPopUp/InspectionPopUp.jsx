@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
+import React, { useState, useEffect } from "react";
 import { FiX } from "react-icons/fi";
-
+import { Box, Typography, Divider, Modal, Button } from "@mui/material";
 import InspectionDetails from "./InspectionDetails/InspectionDetails";
 import ConditionRatings from "./ConditionRatings/ConditionRatings";
 import MaintenanceActions from "./MaintainenceAction/MaintainenceAction";
@@ -13,59 +8,99 @@ import InspectorComment from "./InspectorComment/InspectorComment";
 import { useSelector } from "react-redux";
 import './InspectionPopUp.css'
 
-const InspectionPopUp = ({ open, onClose, id }) => {
+const InspectionPopUp = ({ open, onClose, inspectionId, structureId }) => {
   const [activeFilter, setActiveFilter] = useState("current");
+  // const [inspectionData, setInspectionData] = useState(null);
+  // const [previousInspection, setPreviousInspection] = useState(null);
+  const [selectedStructure, setSelectedStructure] = useState({});
+
+  const [currentInspectionData, setCurrentInspectionData] = useState(null);
+  const [previousInspectionData, setPreviousInspectionData] = useState(null);
+
+  const inspections = useSelector((state) => state.inspectionList.inspections);
+  const structureList = useSelector((state) => state.structure.structureList);
+
+  useEffect(() => {
+    console.log("Inspections", inspections, inspectionId, structureId);
+    const filterInspections = inspections.filter((item) => item.structureId === structureId);
+    if (filterInspections.length === 0) {
+      setCurrentInspectionData(null);
+      setPreviousInspectionData(null);
+      return;
+    }
+    const foundIndex = filterInspections.findIndex((item) => item.id === inspectionId);
+    console.log("Found Index", foundIndex);
+    if (foundIndex > 0) {
+      const previousInspection = (filterInspections[foundIndex - 1]);
+      const previousInspectionDetails = getInspectionDetails(previousInspection);
+      const previousConditionData = getConditionRatings(previousInspection);
+      const previousMaintenanceData = getMaintenanceActions(previousInspection);
+      const previousInspectorComment = previousInspection?.comment || "No comments available";
+      setPreviousInspectionData({ previousInspectionDetails, previousConditionData, previousMaintenanceData, previousInspectorComment });
+
+    }
+
+    const inspectionData = (filterInspections[foundIndex]);
+    console.log("Inspection Data", inspectionData);
+    const inspectionDetails = getInspectionDetails(inspectionData);
+    const conditionData = getConditionRatings(inspectionData);
+    const maintenanceData = getMaintenanceActions(inspectionData);
+    const inspectorComment = inspectionData?.comment || "No comments available";
+
+    setCurrentInspectionData({ inspectionDetails, conditionData, maintenanceData, inspectorComment });
+  }, [inspections, inspectionId, structureId]);
+
+  useEffect(() => {
+    const structure = structureList.find((item) => item.id === structureId);
+    setSelectedStructure(structure);
+  }, [structureList]);
 
   const handleFilterClick = (filter) => {
     setActiveFilter(filter);
   };
 
-  const { inspections: inspectionList } = useSelector(
-    (state) => state.inspectionList
-  );
-
-  const inspectionData = inspectionList.find((item) => item.structureId === id);
-
-  const inspectionDetails = {
-    healthIndex: "Unknown",
-    level: inspectionData?.inspectionLevel,
-    inspectionDate: inspectionData?.inspectionDate,
-    inspectionType: inspectionData?.inspectionType,
-    nextInspection: inspectionData?.nextInspectionProposedDate,
-    temperature: inspectionData?.temperature,
-    weather: inspectionData?.weather,
-    inspector: inspectionData?.inspectorName,
-    engineer: inspectionData?.engineerName,
+  const getInspectionDetails = (inspectionData) => {
+    return {
+      level: inspectionData?.inspectionLevel,
+      inspectionDate: inspectionData?.inspectionDate,
+      inspectionType: inspectionData?.inspectionType,
+      nextInspection: inspectionData?.nextInspectionProposedDate,
+      temperature: inspectionData?.temperature,
+      weather: inspectionData?.weather,
+      inspector: inspectionData?.inspectorName,
+      engineer: inspectionData?.engineerName,
+    };
   };
 
-  const conditionData = inspectionData?.conditionRatings.map((rating) => ({
-    code: rating?.elementCode,
-    desc: rating?.elementDescription,
-    totalQty: 160,
-    unit: "ea",
-    condition: rating?.ratings,
-    element: "+67.0",
-    eci: "+0.0",
-  }));
+  const getConditionRatings = (inspectionData) => {
+    return inspectionData?.conditionRatings.map((rating) => ({
+      code: rating?.elementCode,
+      desc: rating?.elementDescription,
+      totalQty: rating?.totalQty,
+      unit: rating?.unit,
+      condition: rating?.ratings,
+    }));
+  };
 
-  const maintenanceData = inspectionData?.maintenanceActions.map((action) => ({
-    elemCode: action?.elementCode,
-    actNo: action?.mmsActNo,
-    description: action?.elementDescription,
-    comments: action?.inspectionComment,
-    qty: action?.units,
-    date: action?.dateForCompletion,
-    prob: action?.probability,
-    cons: action?.consequenceOfInteraction,
-    inactionRisk: action?.activityInactionRisk,
-    photos:
-      action?.photos?.map((photo) => ({
-        url: photo?.url,
-        fileName: photo?.fileName,
-      })) || [],
-  }));
-
-  const inspectorComment = inspectionData?.comment || "No comments available";
+  const getMaintenanceActions = (inspectionData) => {
+    return inspectionData?.maintenanceActions.map((action) => ({
+      elemCode: action?.elementCode,
+      actNo: action?.mmsActNo,
+      description: action?.elementDescription,
+      comments: action?.inspectionComment,
+      qty: action?.units,
+      date: action?.dateForCompletion,
+      prob: action?.probability,
+      cons: action?.consequenceOfInteraction,
+      inactionRisk: action?.activityInactionRisk,
+      photos:
+        action?.photos?.map((photo) => ({
+          url: photo?.url,
+          fileName: photo?.fileName,
+          apiResponse: photo?.apiResponse,
+        })) || [],
+    }));
+  };
 
   return (
     <Modal className="modal-container" open={open} onClose={onClose}>
@@ -73,7 +108,7 @@ const InspectionPopUp = ({ open, onClose, id }) => {
         {/* Header */}
         <Box className="header-box" >
           <Typography variant="h6" >
-            Bridge 1015 Inspection Report
+            {selectedStructure?.name} Inspection Report
           </Typography>
           <FiX className="close-icon" onClick={onClose} />
         </Box>
@@ -101,23 +136,23 @@ const InspectionPopUp = ({ open, onClose, id }) => {
         <Box className="content-box">
           {activeFilter === "current" ? (
             <>
-              <InspectionDetails details={inspectionDetails} />
+              <InspectionDetails details={currentInspectionData?.inspectionDetails} />
               <Divider />
-              <ConditionRatings data={conditionData} />
-              <Divider/>
-              <MaintenanceActions data={maintenanceData} />
-              <Divider/>
-              <InspectorComment comment={inspectorComment} />
+              <ConditionRatings data={currentInspectionData?.conditionData} />
+              <Divider />
+              <MaintenanceActions data={currentInspectionData?.maintenanceData} />
+              <Divider />
+              <InspectorComment comment={currentInspectionData?.inspectorComment} />
             </>
           ) : (
             <>
-              <InspectionDetails details={inspectionDetails} />
+              <InspectionDetails details={previousInspectionData?.previousInspectionDetails} />
               <Divider />
-              <ConditionRatings data={conditionData} />
-              <Divider/>
-              <MaintenanceActions data={maintenanceData} />
-              <Divider/>
-              <InspectorComment comment={inspectorComment} />
+              <ConditionRatings data={previousInspectionData?.previousConditionData} />
+              <Divider />
+              <MaintenanceActions data={previousInspectionData?.previousMaintenanceData} />
+              <Divider />
+              <InspectorComment comment={previousInspectionData?.previousInspectorComment} />
             </>
           )}
         </Box>
